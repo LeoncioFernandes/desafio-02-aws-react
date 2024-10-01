@@ -1,7 +1,13 @@
-<div style="display: flex; justify-content: center; align-items: center">
-  <img src="public/logoUOL.png" alt="Texto alternativo" width="50px"/>
-  <div style="font-weight: 600; font-size: 50px; margin-left: 10px"><span style="color: #FF8100">UOL</span> Comics</div>
-</div>
+<table align="center">
+  <tr>
+    <td>
+      <img src="public/logoUOL.png" alt="Texto alternativo" width="50px"/>
+    </td>
+    <td style="font-weight: 600; font-size: 50px; padding-left: 10px;">
+      <span style="color: #FF8100;">UOL</span> Comics
+    </td>
+  </tr>
+</table>
 
 ### Clonar o Projeto:
 ```
@@ -45,5 +51,6 @@ npm run dev
 
 - [César Braz](https://github.com/CesarBraz7)
 - [Fabiano Quirino](https://github.com/fabianoqss)
+- [Henrique Aquino](https://github.com/henriqueaquino)
 - [Julliane Di Paula](https://github.com/jullianedipaula)
 - [Leoncio Fernandes](https://github.com/LeoncioFernandes)
