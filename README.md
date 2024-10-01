@@ -1,50 +1,49 @@
-# React + TypeScript + Vite
+<div style="display: flex; justify-content: center; align-items: center">
+  <img src="public/logoUOL.png" alt="Texto alternativo" width="50px"/>
+  <div style="font-weight: 600; font-size: 50px; margin-left: 10px"><span style="color: #FF8100">UOL</span> Comics</div>
+</div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Clonar o Projeto:
+```
+git clone https://github.com/LeoncioFernandes/desafio-02-aws-react.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Instalar as dependências:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
+npm install
+```
+
+### Rodar o Projeto:
+
+```
+npm run dev
+```
+
+### Projeto Desafio desenvolvido no 2º mês do Programa de Bolsas AWS REACT.JS da Compass-UOL que consiste em criar uma aplicação Web no formato de e-commerce denominada **UOL Comics**.
+
+### Tecnologias Utilizadas:
+
+- React + Vite
+- TypeScript
+- Tailwind CSS (Estilização)
+- Axios (Consumo de API)
+- React Router DOM (Roteamento de Páginas)
+- React Icons (Ícones Componentizados)
+- Toastify (Gerenciamento de Notificações)
+- HookForm
+- Zod (Validação de Formulários)
+- Zustand (Criação de useState Global)
+- Session Storage (Armazenamento de dados de Sessão)
+
+### APIs consumidas:
+
+- [Marvel Developer](https://developer.marvel.com/docs)
+- [Via Cep](https://viacep.com.br/)
+
+### Equipe de FrontEnd:
+
+- [César Braz](https://github.com/CesarBraz7)
+- [Fabiano Quirino](https://github.com/fabianoqss)
+- [Julliane Di Paula](https://github.com/jullianedipaula)
+- [Leoncio Fernandes](https://github.com/LeoncioFernandes)
