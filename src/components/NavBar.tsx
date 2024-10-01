@@ -11,19 +11,19 @@ export default function NavBar() {
       </NavLink> */}
       <div className='flex gap-2.5 items-center'>
         <img className='w-16 h-16' src="/public/logoUOL.png" alt="Logo UOL" />
-        <p className='text-5xl font-extrabold'><span className='text-brand'>UOL</span>Comics</p>
+        <p className='text-5xl font-extrabold'><span className='text-secondary'>UOL</span>Comics</p>
       </div>
       
       <div className='flex items-center gap-8 text-2xl p-2.5'>
         <div className='flex gap-4'>
           <NavLink
-            className={({ isActive }) => (isActive ? "text-brand" : "")}
+            className={({ isActive }) => (isActive ? "text-secondary" : "")}
             to="/comics"
           >
             Quadrinhos
           </NavLink>
           <NavLink
-            className={({ isActive }) => (isActive ? "text-brand" : "")}
+            className={({ isActive }) => (isActive ? "text-secondary" : "")}
             to="/characters"
           >
             Personagens
@@ -31,13 +31,13 @@ export default function NavBar() {
         </div>
         
         <NavLink
-          className={({ isActive }) => (isActive ? "text-brand" : "")}
+          className={({ isActive }) => (isActive ? "text-secondary" : "")}
           to="/shopping-cart"
         >
           Carrinho
         </NavLink>
         <NavLink
-          className="text-primary bg-brand px-3 py-2 rounded-lg"
+          className="text-primary bg-secondary px-3 py-2 rounded-lg"
           to="/"
         >
           Sair
