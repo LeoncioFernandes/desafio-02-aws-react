@@ -1,3 +1,151 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer {
+  /* FONT SOFIA-SANS */
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Black.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 900;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-BlackItalic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Black.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 800;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-ExtraBoldItalic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Bold.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-BoldItalic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-SemiBold.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 600;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-SemiBoldItalic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Medium.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 500;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-MediumItalic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Regular.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Italic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Light.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 300;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-LightItalic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 200;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-ExtraLight.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 200;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-ExtraLightItalic.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-Thin.ttf) format(truetype);
+  }
+
+  @font-face {
+    font-family: 'Sofia Sans';
+    font-style: italic;
+    font-weight: 100;
+    font-display: swap;
+    src: url(/fonts/SofiaSans-ThinItalic.ttf) format(truetype);
+  }
+}
