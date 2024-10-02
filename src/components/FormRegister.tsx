@@ -7,7 +7,7 @@ import { CiLock } from "react-icons/ci";
 import { MdOutlinePassword } from "react-icons/md";
 
 const schema = z.object({
-  name: z.string().nonempty("Nome não pode estar vazio"),
+  name: z.string().min(3, {message:"Nome não pode estar vazio"}),
   email: z.string().email("E-mail inválido"),
   password: z.string()
     .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
