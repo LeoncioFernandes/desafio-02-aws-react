@@ -22,6 +22,20 @@ export default {
           light: "#F3F3F3",
           dark: "#BABABA",
         },
+      },
+      keyframes: {
+        'open-menu': {
+          '0%': { width: '0px'},
+          '100%': {width: '12rem'}
+        },
+        'close-menu': {
+          '0%': {width: '12rem'},
+          '100%': {width: '0'}
+        },
+      },
+      animation: {
+        'to-open': 'open-menu 0.5s forwards',
+        'to-close': 'close-menu 0.5s forwards',
       }
     },
   },
