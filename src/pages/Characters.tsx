@@ -22,7 +22,7 @@ export default function Characters() {
     getCharacters();
   }, []);
 
-  const getCharacters = () => {
+  const getCharacters = (): void => {
     axios.get(urlMarvelCharacters, paramsObject)
     .then(response => {
        console.log(response);
@@ -34,7 +34,7 @@ export default function Characters() {
     .catch(error => console.log(error));
   }
 
-  const loadMoreCharacters = () =>{
+  const loadMoreCharacters = (): void =>{
     setOffset(offset + 20);
     getCharacters();
   }

@@ -1,14 +1,20 @@
 import { useRef } from "react";
 
-export default function Character(props){
+interface CharactersProps {
+    characterId: number,
+    urlImage: string,
+    imageDescription: string,
+    name: string
+}
+
+export default function Character(props: CharactersProps){
 
     const handleBgColorOn = ()=>{
          const elem = document.getElementById(`bottom-character-bg-${props.characterId}`);
          if(elem){
-            let currentClassName = elem.className;
+            const currentClassName = elem.className;
             elem.classList.remove("bg-tertiary");
             elem.classList.add("bg-secondary");
-            currentClassName = elem.className;
          }
         
     }
@@ -16,7 +22,7 @@ export default function Character(props){
     const handleBgColorOff = ()=>{
         const elem = document.getElementById(`bottom-character-bg-${props.characterId}`);
         if(elem){
-           let currentClassName = elem.className;
+           const currentClassName = elem.className;
            elem.classList.remove("bg-secondary");
            elem.classList.add("bg-tertiary");
         }
