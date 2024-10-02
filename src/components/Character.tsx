@@ -1,4 +1,3 @@
-import { useRef } from "react";
 
 interface CharactersProps {
     characterId: number,
@@ -12,7 +11,6 @@ export default function Character(props: CharactersProps){
     const handleBgColorOn = ()=>{
          const elem = document.getElementById(`bottom-character-bg-${props.characterId}`);
          if(elem){
-            const currentClassName = elem.className;
             elem.classList.remove("bg-tertiary");
             elem.classList.add("bg-secondary");
          }
@@ -22,7 +20,6 @@ export default function Character(props: CharactersProps){
     const handleBgColorOff = ()=>{
         const elem = document.getElementById(`bottom-character-bg-${props.characterId}`);
         if(elem){
-           const currentClassName = elem.className;
            elem.classList.remove("bg-secondary");
            elem.classList.add("bg-tertiary");
         }
@@ -47,7 +44,7 @@ export default function Character(props: CharactersProps){
 
             <div 
                 id={`bottom-character-bg-${props.characterId}`} 
-                className="w-64 h-52 bg-tertiary rounded-br-md hover:bg-secondary">
+                className="w-64 h-28 bg-tertiary rounded-br-3xl hover:bg-secondary">
                     
                 <h4 className="text-gray-light pt-3 pl-3">{props.name}</h4>
             </div>

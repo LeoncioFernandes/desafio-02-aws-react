@@ -22,6 +22,9 @@ export default {
           light: "#F3F3F3",
           dark: "#BABABA",
         },
+      },
+      boxShadow: {
+        "3xl": "0 20px 20px -12px rgb(0 0 0 / 0.50)",
       }
     },
   },

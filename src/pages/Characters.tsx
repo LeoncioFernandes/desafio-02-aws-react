@@ -3,10 +3,23 @@ import axios from "axios";
 import Character from "../components/Character";
 import ButtonCharacters from "../components/ButtonCharacters";
 
+interface Image{
+  path: string,
+  extension: string
+}
+
+interface Character{
+  id: number,
+  name: string,
+  description: string,
+  thumbnail: Image
+}
+
 export default function Characters() {
-  const [characters, setCharacters] = useState([]);
-  const [offset , setOffset] = useState(0);
-  const [limit, setLimit] = useState(20);
+  const [limit, setLimit] = useState<number>(20);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [offset , setOffset] = useState<number>(0);
+  
   
   const urlMarvelCharacters = "https://gateway.marvel.com/v1/public/characters";
   const publicKey = "493f684e0ee7ad7b3784da42ad63eee4";
@@ -35,7 +48,9 @@ export default function Characters() {
   }
 
   const loadMoreCharacters = (): void =>{
-    setOffset(offset + 20);
+    const newLimit: number = limit + 20;
+    paramsObject.params.limit = newLimit;
+    setLimit(newLimit);
     getCharacters();
   }
 
@@ -46,14 +61,14 @@ export default function Characters() {
 
         {
           characters.length > 0 ? 
-          characters.map((character) => <Character 
+          characters.map((character: Character) => <Character 
             key={character.id} 
             characterId={character.id} 
             urlImage={character.thumbnail.path + "." + character.thumbnail.extension} 
-            imageDescription={character.description} 
-            name={character.name} />) 
+            imageDescription={character.description ? character.description : "Sem registro"} 
+            name={character.name ? character.name : "Sem registro"} />) 
           : 
-          <div>nothing</div>
+          <div></div>
         }
 
       </div>
