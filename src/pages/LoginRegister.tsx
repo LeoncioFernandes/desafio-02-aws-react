@@ -13,7 +13,7 @@ export default function LoginRegister() {
       <a
         href="#"
         onClick={() => setShowLogin(false)}
-        className="text-secondary hover:text-primary transition-colors"
+        className="text-secondary hover:text-secondary2 transition-colors"
       >
         Clique aqui!
       </a>
@@ -24,7 +24,7 @@ export default function LoginRegister() {
       <a
         href="#"
         onClick={() => setShowLogin(true)}
-        className="text-secondary hover:text-primary transition-colors"
+        className="text-secondary hover:text-secondary2 transition-colors"
       >
         Clique aqui!
       </a>
