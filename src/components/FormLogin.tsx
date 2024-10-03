@@ -2,8 +2,11 @@
 import { CiAt } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 
+type FormLoginProps = {
+  toggleLink: React.ReactNode;
+};
 
-export default function FormLogin() {
+export default function FormLogin({ toggleLink }: FormLoginProps) {
   return (
     <form className="bg-primary shadow-2xl w-80 rounded-lg">
       <h1 className="flex justify-center mt-8 mb-6 mx-11 pt-8 items-center font-semibold text-3xl">
@@ -41,15 +44,10 @@ export default function FormLogin() {
         Entrar
       </button>
 
-      <span className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
-        Ainda não tem uma conta? {" "}
-        <a
-          href="#"
-          className="text-secondary hover:text-primary transition-colors"
-        >
-       Clique aqui!
-        </a>
-      </span>
+      <div className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
+        {toggleLink}
+      </div>
+    
     </form>
   )
 }

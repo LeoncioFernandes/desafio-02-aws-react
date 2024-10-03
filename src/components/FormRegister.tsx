@@ -21,8 +21,11 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export default function FormRegister() {
+type FormRegisterProps = {
+  toggleLink: React.ReactNode;
+};
 
+export default function FormRegister({ toggleLink }: FormRegisterProps) {
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -100,15 +103,9 @@ export default function FormRegister() {
         Cadastrar
       </button>
 
-      <span className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
-        Já tem uma conta?{" "}
-        <a
-          href="#"
-          className="text-secondary hover:text-primary transition-colors"
-        >
-          Clique aqui!
-        </a>
-      </span>
+      <div className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
+        {toggleLink}
+      </div>
     </form>
   )
   }
