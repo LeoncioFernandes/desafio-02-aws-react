@@ -38,7 +38,7 @@ export default function Sucessfull() {
         <div className="flex justify-center items-center bg-secondary text-white rounded-full w-8 h-8">
           <FaMapMarkerAlt/> 
         </div>
-        <span>Entrega em <strong>{checkoutData.street}, {checkoutData.number}<br />ADICIONAR BAIRRO DEPOIS - {checkoutData.city}, {checkoutData.state}</strong></span>
+        <span>Entrega em <strong>{checkoutData.street}, {checkoutData.number}<br />- {checkoutData.city}, {checkoutData.state}</strong></span>
         
         <div className="flex justify-center items-center bg-secondary text-white rounded-full w-8 h-8">
           <FaClock/> 
