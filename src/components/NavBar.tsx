@@ -106,7 +106,7 @@ export default function NavBar() {
           
           {/* CARRINHO DE COMPRAS */}
           <NavLink
-            className={({ isActive }) => (isActive ? "bg-secondary rounded-full text-primary" : "")}
+            className={({ isActive }) => (isActive ? "bg-secondary rounded-full text-primary" : "hover:bg-secondary hover:rounded-full hover:text-primary group")}
             to="/shopping-cart"
           >
             {({isActive}) => {
@@ -115,7 +115,7 @@ export default function NavBar() {
               }
               return (
                 <div className=' relative w-10 md:w-14 h-10 md:h-14 p-2'>
-                  <div className='absolute right-2 md:right-2 top-1 md:top-1.5 bg-secondary w-1.5 md:w-2 h-1.5 md:h-2 rounded-full'></div>
+                  <div className={`absolute right-2 md:right-2.5 top-1 md:top-1.5 w-1.5 md:w-2 h-1.5 md:h-2 rounded-full group-hover:bg-tertiary ${isActive ? "bg-tertiary" : "bg-secondary"}`}></div>
                   <IoCartOutline className='w-full h-full' />
                 </div>
               )
@@ -124,7 +124,7 @@ export default function NavBar() {
           
           {/* SAIR */}
           <NavLink
-            className="hidden md:flex items-center gap-2 text-primary bg-secondary px-3 py-2 rounded-[9px] border-[1px] border-transparent active:bg-primary active:text-secondary active:border-secondary"
+            className="hidden md:flex items-center gap-2 text-primary bg-secondary px-3 py-2 rounded-[9px] border-[1px] border-transparent hover:bg-primary hover:text-secondary hover:border-secondary"
             to="/"
           >
             <PiSignOutBold className='w-6 h-6' />
