@@ -17,10 +17,11 @@ interface Character{
 }
 
 export default function Characters() {
-  const [limit, setLimit] = useState<number>(20);
+  // const [limit, setLimit] = useState<number>(20);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [offset , setOffset] = useState<number>(0);
-  const [load, setLoad] = useState<boolean | null>(true);
+  const [load, setLoad] = useState<boolean>(true);
+  const [errorApi, setErroApi] = useState<boolean>(false);
   
   
   const urlMarvelCharacters = "https://gateway.marvel.com/v1/public/characters";
@@ -29,7 +30,7 @@ export default function Characters() {
     params: {
       apikey: publicKey,
       offset: offset,
-      limit: limit
+      limit: 20
     }
   };
 
@@ -41,23 +42,32 @@ export default function Characters() {
     setLoad(true);
     await axios.get(urlMarvelCharacters, paramsObject)
     .then(response => {
-       console.log(response);
-       console.log(response.data)
-       console.log(response.data.data);
-       console.log(response.data.data.results);
-       setCharacters(response.data.data.results);
-       setLoad(false);
+      //  console.log(response);
+      //  console.log(response.data)
+      //  console.log(response.data.data);
+      //  console.log(response.data.data.results);
+      
+      const newCharacters: Character[] = [...characters, ...response.data.data.results]
+      setCharacters(newCharacters);
+      setLoad(false);
+      setErroApi(false);
     })
-    .catch(error => {
-      console.log(error)
-      setLoad(null);
+    .catch(() => {
+      // console.log(error)
+      setLoad(false);
+      setErroApi(true);
+      if(offset > 0){
+        const newOfsset: number = offset - 20;
+        paramsObject.params.offset = newOfsset;
+        setOffset(newOfsset);
+      }
     });
   }
 
   const loadMoreCharacters = (): void =>{
-    const newLimit: number = limit + 20;
-    paramsObject.params.limit = newLimit;
-    setLimit(newLimit);
+    const newOfsset: number = offset + 20;
+    paramsObject.params.offset = newOfsset;
+    setOffset(newOfsset);
     getCharacters();
   }
 
@@ -85,6 +95,12 @@ export default function Characters() {
         <div className="flex justify-center">
         <ButtonCharacters loadCharacters={loadMoreCharacters} />
       </div>
+      )}
+
+      {errorApi && (
+        <div className="text-center text-red-800 text-2xl">
+          Erro ao buscar os dados! Recarregue a página.
+        </div>
       )}
 
       

@@ -39,9 +39,10 @@ export default function NavBar() {
   }
 
   const openMenu = () => {
+    document.body.style.overflow = "hidden"
     setMenuVisible(true);
     setIsAnimateClose(true);
-    document.body.style.overflow = "hidden"
+    
   };
 
   const closeMenu = () => {
@@ -147,11 +148,11 @@ export default function NavBar() {
       {/* FUNDO BLUR MENU SANDUÍCHE */}
       <div
         onClick={closeMenu}
-        className={`${menuVisible ? "block" : "hidden"} absolute w-screen h-screen inset-0 backdrop-blur-sm overflow-hidden bg-black/50`}>
+        className={`${menuVisible ? "block" : "hidden"} fixed w-screen h-screen inset-0 backdrop-blur-sm overflow-hidden bg-black/50 z-10`}>
       </div>
       
       {/* MENU SANDUÍCHE ABERTO */}
-      <div className={`absolute top-0 right-0 ${menuVisible ? "animate-to-open" : isAnimateClose && "animate-to-close"} flex flex-col gap-[18px] w-0 h-svh overflow-hidden pt-3.5 bg-primary`}>
+      <div className={`fixed top-0 right-0 ${menuVisible ? "animate-to-open" : isAnimateClose && "animate-to-close"} flex flex-col gap-[18px] w-0 h-svh overflow-hidden pt-3.5 bg-primary z-10`}>
 
         {/* BUTTON FECHAR */}
         <div className='flex justify-end'>
