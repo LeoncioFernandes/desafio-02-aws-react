@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Character from "../components/Character";
 import ButtonCharacters from "../components/ButtonCharacters";
-import { BiLoaderCircle } from "react-icons/bi";
+import Loader from "../components/Loader";
 
 interface Image{
   path: string,
@@ -88,9 +88,7 @@ export default function Characters() {
       </div>
 
       {load ? (
-        <div className="flex justify-center animate-spin">
-          <BiLoaderCircle className="w-20 h-20 text-secondary" />
-        </div> 
+        <Loader/>
       ) : (
         <div className="flex justify-center">
         <ButtonCharacters loadCharacters={loadMoreCharacters} />
