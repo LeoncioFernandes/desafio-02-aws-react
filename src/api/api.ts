@@ -1,1 +1,0 @@
-export const key: string = "apikey=338e591eeb1b4cf906e914d8554e3b8a" 
