@@ -23,8 +23,19 @@ export default {
           dark: "#BABABA",
         },
       },
-      boxShadow: {
-        "3xl": "0 20px 20px -12px rgb(0 0 0 / 0.50)",
+      keyframes: {
+        'open-menu': {
+          '0%': { width: '0px'},
+          '100%': {width: '12rem'}
+        },
+        'close-menu': {
+          '0%': {width: '12rem'},
+          '100%': {width: '0'}
+        },
+      },
+      animation: {
+        'to-open': 'open-menu 0.5s forwards',
+        'to-close': 'close-menu 0.5s forwards',
       }
     },
   },
