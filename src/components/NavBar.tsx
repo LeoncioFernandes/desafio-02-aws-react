@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { IoSearchSharp, IoCartOutline, IoClose } from "react-icons/io5";
 import { PiSignOutBold } from "react-icons/pi";
 import { MdOutlineMenu } from "react-icons/md";
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function NavBar() {
 
@@ -10,6 +10,22 @@ export default function NavBar() {
   const [isAnimateClose, setIsAnimateClose] = useState<boolean>(false);
   const [pageActive, setPageActive] = useState<'comics' | 'characters' | null>(null);
   const [placeholder, setPlaceholder] = useState<string>("")
+
+  const navRef = useRef<HTMLElement>(null)
+  const [heightNavBar, setHeightNavBar] = useState<number>(0)
+
+  function CurrentNavBarHeight(){
+    if(navRef.current){
+      setHeightNavBar(navRef.current.clientHeight)
+    }
+  }
+    
+  useEffect(() => {
+    setHeightNavBar(navRef.current!.clientHeight)
+    window.addEventListener('resize', CurrentNavBarHeight);
+
+    return () => window.removeEventListener('resize', CurrentNavBarHeight);
+  }, [])
 
   function ActivePage(page: 'comics' | 'characters' | null) {
     setPageActive(page)
@@ -23,9 +39,10 @@ export default function NavBar() {
   }
 
   const openMenu = () => {
+    document.body.style.overflow = "hidden"
     setMenuVisible(true);
     setIsAnimateClose(true);
-    document.body.style.overflow = "hidden"
+    
   };
 
   const closeMenu = () => {
@@ -35,7 +52,7 @@ export default function NavBar() {
 
   return (
     <>
-      <nav className='fixed flex w-full items-center justify-between flex-wrap md:flex-nowrap drop-shadow-lg p-3 lg:p-6 xl:p-8 gap-6 xl:gap-16 bg-primary '>
+      <nav ref={navRef} className='fixed flex w-full items-center justify-between flex-wrap md:flex-nowrap drop-shadow-lg p-3 lg:p-6 xl:p-8 gap-6 xl:gap-16 bg-primary z-10'>
 
         {/* LOGO */}
         <div className='flex gap-2.5 items-center'>
@@ -126,16 +143,16 @@ export default function NavBar() {
       </nav>
 
       {/* COMPENSAÇÃO NAVBAR FIXA */}
-      <div className='h-[120px] md:h-20 lg:h-[108px] xl:h-32'></div>
+      <div style={{height: heightNavBar}}></div>
 
       {/* FUNDO BLUR MENU SANDUÍCHE */}
       <div
         onClick={closeMenu}
-        className={`${menuVisible ? "block" : "hidden"} absolute w-screen h-screen inset-0 backdrop-blur-sm overflow-hidden bg-black/50`}>
+        className={`${menuVisible ? "block" : "hidden"} fixed w-screen h-screen inset-0 backdrop-blur-sm overflow-hidden bg-black/50 z-10`}>
       </div>
       
       {/* MENU SANDUÍCHE ABERTO */}
-      <div className={`absolute top-0 right-0 ${menuVisible ? "animate-to-open" : isAnimateClose && "animate-to-close"} flex flex-col gap-[18px] w-0 h-svh overflow-hidden pt-3.5 bg-primary`}>
+      <div className={`fixed top-0 right-0 ${menuVisible ? "animate-to-open" : isAnimateClose && "animate-to-close"} flex flex-col gap-[18px] w-0 h-svh overflow-hidden pt-3.5 bg-primary z-10`}>
 
         {/* BUTTON FECHAR */}
         <div className='flex justify-end'>
