@@ -41,9 +41,6 @@ function App() {
         <Route path="/buy" element={<Buy/>}/>
         <Route path="/sucessfull" element={<Sucessfull/>}/>
       </Routes>
-
-    <Characters />
-
     </>
   )
 }

@@ -7,7 +7,7 @@ interface ButtonCharactersProps{
 export default function ButtonCharacters(props: ButtonCharactersProps){
     return (
         <button 
-            className="pt-3 pb-3 pr-8 pl-8 text-gray-light bg-secondary rounded-full hover:shadow-3xl" 
-            onClick={props.loadCharacters}> <FaPlus className="inline" /> Carregar Mais</button>
+            className="flex gap-1 items-center py-3.5 px-4 text-primary text-base font-medium bg-secondary rounded-full border-[1px] hover:text-secondary hover:bg-primary hover:border-secondary" 
+            onClick={props.loadCharacters}> <FaPlus className="w-3.5 h-3.5" />Carregar mais</button>
     );
 }

@@ -51,7 +51,7 @@ export default function NavBar() {
 
   return (
     <>
-      <nav ref={navRef} className='fixed flex w-full items-center justify-between flex-wrap md:flex-nowrap drop-shadow-lg p-3 lg:p-6 xl:p-8 gap-6 xl:gap-16 bg-primary '>
+      <nav ref={navRef} className='fixed flex w-full items-center justify-between flex-wrap md:flex-nowrap drop-shadow-lg p-3 lg:p-6 xl:p-8 gap-6 xl:gap-16 bg-primary z-10'>
 
         {/* LOGO */}
         <div className='flex gap-2.5 items-center'>
