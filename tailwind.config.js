@@ -5,6 +5,7 @@ export default {
     extend: {
       screens: {
         xs: { max: '375px' },
+        ls: { max: '768' },
       },
       fontFamily: {
         sofiasans: ['Sofia Sans', 'sans-serif'],

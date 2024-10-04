@@ -62,31 +62,35 @@ export default function Buy() {
     window.location.href = "/sucessfull"; 
   };
 
-
-  {/*Taxa aleatoria entre 3 e 30 */}
   const totalValue = Number(29.70);
 
 
   return (
-    <div className="grid mx-auto justify-center">
-    <h1 className="font-bold text-blackText text-6xl text-center my-8">Finalize a Compra</h1>
-      <div className="text-start bg-gray-200 rounded-md p-10 max-w-3xl">
+    <div className="grid justify-center"> 
+    <h1 className="font-extrabold text-blackText text-6xl text-center my-8 xs:text-3xl ls:4xl">Finalize a Compra</h1>
+      <div className="text-start w-full max-w-[640px] bg-gray-light rounded-md p-2 sm:p-10  xs:p-4 xs:w-full xs:content-center  ls:p-2">
         
-          <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
-                <GrLocation className="text-secondary w-4 h-4" />
+          <div className="flex gap-2 items-center">
+              <div>
+              <GrLocation className="text-secondary w-6 h-6" />
+              </div>
+              <div>
                 <h2 className="text-xl font-semibold">Endereço de entrega</h2>
                 <p className="text-gray-700 col-start-2">
                   Informe o endereço onde deseja receber seu pedido.
                 </p>
+                </div>
               </div>
+              
 
+              <div className="flex flex-col gap-4 mt-8">
               <input
                 type="text"
                 id="cep"
                 placeholder="00000-000"
                 value={cep}
                 onChange={handleCepChange}
-                className="my-4 block p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
+                className="max-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none xs:w-full"
                 
               />
 
@@ -97,11 +101,11 @@ export default function Buy() {
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
                 placeholder="Nome da rua"
-                className="block w-full p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
+                className="p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
               />
 
-              <div className="grid grid-cols-[1fr_2fr] gap-4">
-                <div>
+              <div className="flex w-full gap-3 flex-col sm:flex-row">
+ 
                   <input
                     type="text"
                     id="number"
@@ -109,11 +113,11 @@ export default function Buy() {
                     value={number}
                     onChange={(e) => setNumber(e.target.value)}
                     placeholder="Número"
-                    className="my-4 block w-full p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
+                    className="sm:w-[200px] p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none "
                   />
-                </div>
 
-                <div>
+
+ 
                   <input
                     type="text"
                     id="complemento"
@@ -121,37 +125,37 @@ export default function Buy() {
                     value={complement}
                     onChange={(e) => setComplement(e.target.value)}
                     placeholder="Complemento"
-                    className="my-4 block w-full p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
+                    className=" flex-auto p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
                   />
-                </div>
+
               </div>
 
-              <div className="grid grid-cols-[1.3fr_2fr_0.5fr] gap-4"> 
-          <div>
+              <div className="flex gap-3 flex-col sm:flex-row">
+
+            <input
+              type="text"
+              id="bairro"
+              name="bairro"
+              value={neighborhood}
+              onChange={(e) => setNeighborhood(e.target.value)}
+              placeholder="Bairro"
+              className="sm:min-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
+            /> 
+
+
+            <div className="flex gap-3 w-full">
             <input
               type="text"
               id="cidade"
               name="cidade"
-              value={neighborhood}
-              onChange={(e) => setNeighborhood(e.target.value)}
-              placeholder="Bairro"
-              className="block w-full p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
-            /> 
-          </div>
-
-          <div>
-            <input
-              type="text"
-              id="estado"
-              name="estado"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder="Cidade"
-              className="block w-full p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
+              className="flex-auto p-3 border border-gray-dark rounded-md shadow-sm  sm:text-sm outline-none"
             /> 
-          </div>
 
-          <div>
+
+
             <input
               type="text"
               id="sigla"
@@ -159,30 +163,36 @@ export default function Buy() {
               value={state}
               onChange={(e) => setState(e.target.value)}
               placeholder="UF"
-              className="block w-full p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
+              className="w-16 p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
             /> 
-          </div>
+        </div>
         </div>
         
       </div>
+      </div>
 
-      <section className="mb-60 max-w-3xl text-start bg-gray-200 rounded-md p-10 mt-3">
-        <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
-          <PiCurrencyDollarThin className="text-secondary w-4 h-4" />
-          <h2 className="text-xl font-semibold">Pagamento</h2>
-          <p className="text-gray-700 col-start-2">
+      <section className="mb-60 max-w-3xl text-start bg-gray-light rounded-md p-10 mt-3 xs:px-2 xs:py-10 xs:max-w-90 xs:mb-10">
+        <div className="flex gap-2 items-center items-center">
+          <div>
+          <PiCurrencyDollarThin className="text-secondary w-6 h-6" />
+          </div>
+
+          <div>
+          <h2 className="text-xl text-tertiary">Pagamento</h2>
+          <p className="text-blackText col-start-2">
             O pagamento é feito na entrega. Escolha a forma que deseja pagar
           </p>
+          </div>
         </div>
 
-        <div className="flex justify-between mt-8">
+        <div className="flex justify-between mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border">{/* 13 */}
           <button
             onClick={() => setMethodPayment("Cartão de Crédito")}
             className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg ${
               methodPayment === "Cartão de Crédito"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
-            } mr-2`}
+            }`}
           >
           <PiCreditCardLight className="text-secondary w-4 h-4"/>  CARTÃO DE CRÉDITO
           </button>
@@ -193,7 +203,7 @@ export default function Buy() {
               methodPayment === "Cartão de Débito"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
-            } mx-2`}
+            }`}
           >
           <PiBank className="text-secondary w-4 h-4"/>
           CARTÃO DE DÉBITO
@@ -205,7 +215,7 @@ export default function Buy() {
               methodPayment === "Dinheiro"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
-            } ml-2`}
+            }`}
           >
           <FaMoneyBill className="text-secondary w-4 h-4"/> DINHEIRO
           </button>
@@ -214,13 +224,15 @@ export default function Buy() {
       </section>
 
 
-      <footer className="grid fixed bottom-0 w-full bg-primary justify-center border-t border-t-gray-dark  ">
-        <div className="grid grid-cols-2 gap-4 w-[720px] justify-between my-4">
+      <footer className="grid fixed bottom-0 w-full bg-primary justify-center border-t border-t-gray-dark xs:mt-21 ">
+        <div className="grid grid-cols-2 gap-4 w-[720px] justify-between my-4 xs:hidden">
   <div className="grid gap-y-3">
+
     <p>Total de Itens</p>
     <p>Entrega</p>
     <p><strong>Total</strong></p>
   </div>
+
 
   <div className="grid text-end gap-y-3">
     <p>R$ {totalValue.toFixed(2)}</p>
@@ -232,7 +244,7 @@ export default function Buy() {
 <div className="flex justify-center mt-4"> 
     <button 
       type="submit"
-      className="bg-orange-500 text-white px-14 py-2 rounded-lg mb-4"
+      className="bg-secondary text-white px-14 py-2 rounded-lg mb-4"
       onClick={checkout}
     >
       Finalizar Compra
@@ -241,7 +253,7 @@ export default function Buy() {
 
             
         </footer> 
-  </div>
+ </div> 
 
   )
 }

@@ -31,7 +31,7 @@ export default function Sucessfull() {
       <div className='mt-3'>
       <h1 className="text-4xl text-start font-extrabold mb-2 xs:text-3xl xs:w-48 text-tertiary">Compra realizada!</h1>
 
-      <p className="text-lg mb-6 text-left">Agora é só aguardar que logo as suas comics chegam aí!</p>
+      <p className="text-lg mb-6 text-left text-tertiary">Agora é só aguardar que logo as suas comics chegam aí!</p>
       </div>
       
       <div className="grid grid-cols-[auto_1fr] gap-y-8 gap-x-4 text-lg text-left">
