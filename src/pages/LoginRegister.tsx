@@ -32,15 +32,19 @@ export default function LoginRegister() {
   );
 
   return (
-    <div className="max-w-[1440px] max-h-[1024px] flex overflow-hidden">
-      <div className="spider-man max-w-4xl w-full">
-        <img src={spider} className="object-cover w-full " />
+    <div className=" h-svh flex overflow-hidden">
+
+      <div className="w-1/2 h-full flex justify-center items-center bg-green-400 ">
+        <img src={spider} className="object-cover h-full w-full " />
       </div>
+
       <div className="w-1/2 flex justify-center items-center flex-col">
-        <div className="logo ">
-          <img src={logo} />
+
+        <div className="logo mb-6 ">
+          <img src={logo} className="w-auto h-16"/>
         </div>
-        <div className="forms">
+
+        <div className="">
           {showLogin ? (
             <FormLogin toggleLink={toggleLink} />
           ) : (

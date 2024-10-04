@@ -44,7 +44,7 @@ export default function FormRegister({
     resolver: zodResolver(schema),
   });
 
-  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [feedbackMessage] = useState<string | null>(null);
 
   const onSubmit = (data: FormData) => {
     sessionStorage.setItem("FormData", JSON.stringify(data));
@@ -53,11 +53,10 @@ export default function FormRegister({
     console.log("Dados armazenados com sucesso", data);
 
     setTimeout(() => {
-      setFeedbackMessage(null);
       if (onSuccess) {
         onSuccess();
       }
-    }, 1000);
+    }, 2000);
   };
 
   return (
