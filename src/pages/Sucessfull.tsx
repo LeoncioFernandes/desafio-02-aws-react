@@ -33,12 +33,12 @@ export default function Sucessfull() {
       <p className="text-lg mb-6 text-left ">Agora é só aguardar que logo as suas comics chegam aí!</p>
       </div>
       
-      <div className="grid grid-cols-[auto_1fr] gap-8 text-lg mb-6 text-left">
+      <div className="grid grid-cols-[auto_1fr] gap-y-8 gap-x-4 text-lg mb-6 text-left">
         
         <div className="flex justify-center items-center bg-secondary text-white rounded-full w-8 h-8">
           <FaMapMarkerAlt/> 
         </div>
-        <span>Entrega em <strong>{checkoutData.street}, {checkoutData.number}<br />- {checkoutData.city}, {checkoutData.state}</strong></span>
+        <span>Entrega em <strong>{checkoutData.street}, {checkoutData.number}</strong><br /> {checkoutData.neighborhood} - {checkoutData.city}, {checkoutData.state}</span>
         
         <div className="flex justify-center items-center bg-secondary text-white rounded-full w-8 h-8">
           <FaClock/> 
