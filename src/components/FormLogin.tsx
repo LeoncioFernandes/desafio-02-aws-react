@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CiAt } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 
 type FormLoginProps = {
@@ -11,18 +12,16 @@ type FormLoginProps = {
 const schema = z.object({
   email: z.string().email("E-mail inválido"),
   password: z
-      .string()
-      .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
-        message:
-          "A senha deve ter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.",
-      }),
+    .string()
+    .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
+      message:
+        "A senha deve ter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.",
+    }),
 });
 
 type FormData = z.infer<typeof schema>;
 
-
 export default function FormLogin({ toggleLink }: FormLoginProps) {
-
   const {
     register,
     handleSubmit,
@@ -35,21 +34,24 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
     const storedData = sessionStorage.getItem("FormData");
 
     if (storedData) {
-
       const parsedData = JSON.parse(storedData);
 
-      if (parsedData.email === data.email && parsedData.password === data.password) {
+      if (
+        parsedData.email === data.email &&
+        parsedData.password === data.password
+      ) {
         console.log("Login bem sucedido", data);
       } else {
         console.log("Usuário não encontrado", data);
       }
-    } 
+    }
   };
-  
+
   return (
-    <form 
-    onSubmit={handleSubmit(onSubmit)}
-    className="bg-primary shadow-2xl w-80 rounded-lg">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-primary shadow-2xl w-80 rounded-lg"
+    >
       <h1 className="flex justify-center mt-8 mb-6 mx-11 pt-8 items-center font-semibold text-3xl">
         Escolha seu herói
       </h1>
@@ -85,22 +87,21 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
           />
         </div>
         {errors.password && (
-        <span className="ml-7 block text-xs text-secondary">
-          {errors.password.message?.toString()}
-        </span>
-      )}
+          <span className="ml-7 block text-xs text-secondary">
+            {errors.password.message?.toString()}
+          </span>
+        )}
       </div>
       <button
         type="submit"
         className="bg-secondary font-bold text-2xl text-primary border-2 flex items-center justify-center border-secondary w-72  h-11 rounded-md mx-4 hover:bg-primary hover:text-secondary hover:border-secondary transition-colors"
       >
-        Entrar
+        <Link to={"/comics"}>Entrar</Link>
       </button>
 
       <div className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
         {toggleLink}
       </div>
-    
     </form>
-  )
+  );
 }

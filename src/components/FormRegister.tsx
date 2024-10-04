@@ -5,6 +5,7 @@ import { FiUser } from "react-icons/fi";
 import { CiAt } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import { MdOutlinePassword } from "react-icons/md";
+import { useState } from "react";
 
 const schema = z
   .object({
@@ -26,10 +27,15 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 type FormRegisterProps = {
-  toggleLink: React.ReactNode;
+  toggleLink?: React.ReactNode;
+
+  onSuccess?: () => void;
 };
 
-export default function FormRegister({ toggleLink }: FormRegisterProps) {
+export default function FormRegister({
+  toggleLink,
+  onSuccess,
+}: FormRegisterProps) {
   const {
     register,
     handleSubmit,
@@ -38,11 +44,20 @@ export default function FormRegister({ toggleLink }: FormRegisterProps) {
     resolver: zodResolver(schema),
   });
 
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+
   const onSubmit = (data: FormData) => {
     sessionStorage.setItem("FormData", JSON.stringify(data));
     localStorage.setItem("FormData", JSON.stringify(data));
 
     console.log("Dados armazenados com sucesso", data);
+
+    setTimeout(() => {
+      setFeedbackMessage(null);
+      if (onSuccess) {
+        onSuccess();
+      }
+    }, 1000);
   };
 
   return (
@@ -53,6 +68,11 @@ export default function FormRegister({ toggleLink }: FormRegisterProps) {
       <h1 className="flex justify-center mt-8 mb-6 pt-8 mx-11 items-center font-semibold text-4xl">
         Crie seu herói
       </h1>
+
+      {feedbackMessage && (
+        <div className="text-green-500 text-center mb-4">{feedbackMessage}</div>
+      )}
+
       {errors.name && (
         <span className="ml-7 block text-xs text-secondary">
           {errors.name.message?.toString()}
@@ -133,7 +153,7 @@ export default function FormRegister({ toggleLink }: FormRegisterProps) {
       </button>
 
       <div className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
-        {toggleLink}
+        <span>{toggleLink}</span>
       </div>
     </form>
   );

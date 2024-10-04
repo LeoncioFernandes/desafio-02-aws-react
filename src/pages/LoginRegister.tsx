@@ -32,11 +32,11 @@ export default function LoginRegister() {
   );
 
   return (
-    <div className="page flex  h-full overflow-hidden">
-      <div className="spider-man w-1/2 object-fill">
-        <img src={spider} />
+    <div className="max-w-[1440px] max-h-[1024px] flex overflow-hidden">
+      <div className="spider-man max-w-4xl w-full">
+        <img src={spider} className="object-cover w-full " />
       </div>
-      <div className="w-1/2">
+      <div className="w-1/2 flex justify-center items-center flex-col">
         <div className="logo ">
           <img src={logo} />
         </div>
@@ -44,7 +44,10 @@ export default function LoginRegister() {
           {showLogin ? (
             <FormLogin toggleLink={toggleLink} />
           ) : (
-            <FormRegister toggleLink={toggleLink} />
+            <FormRegister
+              toggleLink={toggleLink}
+              onSuccess={() => setShowLogin(true)}
+            />
           )}
         </div>
       </div>
