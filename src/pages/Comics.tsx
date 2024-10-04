@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import ComicCard from "../components/ComicCard"
 import instance from "../hooks/instance"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import ButtonCharacters from "../components/ButtonCharacters"
-import { BiLoaderCircle } from "react-icons/bi"
+import Loader from "../components/Loader"
 
 type Comic = {
   id: number,
@@ -31,6 +31,7 @@ export default function Comics() {
   const [data, setData] = useState<Comic[]>([])
   const [offset, setOffset] = useState<number>(0);
   const [load, setLoad] = useState<boolean>(true);
+  const [errorApi, setErroApi] = useState<boolean>(false);
 
   const publicKey = "493f684e0ee7ad7b3784da42ad63eee4";
   const paramsObject = {
@@ -46,9 +47,17 @@ export default function Comics() {
     setLoad(true)
     try {
       const res = await instance.get("comics", paramsObject)
-      setData(res.data.data.results)
+      const newComics: Comic[] = [...data, ...res.data.data.results]
+      setData(newComics)
+      setErroApi(false);
     } catch (error) {
+      setErroApi(true);
       console.log(error)
+      if(offset > 0){
+        const newOfsset: number = offset - 20;
+        paramsObject.params.offset = newOfsset;
+        setOffset(newOfsset);
+      }
     } finally {
       setLoad(false)
     }
@@ -66,10 +75,10 @@ export default function Comics() {
   }
 
   return (
-    <div className="w-full flex flex-col">
-      <div className="flex flex-wrap justify-evenly my-8 px-14 sm:m-8 sm:px-28">
+    <div className="flex flex-col gap-8 sm:gap-16 p-6 sm:p-8">
+      <div className="flex flex-row justify-center flex-wrap gap-6 sm:gap-16">
         {data.map(comic => (
-          <Link key={comic.id}
+          <NavLink key={comic.id}
             to={`/comics/${comic.id}`}>
             <ComicCard
               title={comic.title}
@@ -79,16 +88,19 @@ export default function Comics() {
               author={comic.creators.items[0]?.name || 'Unknown'}
               year={new Date(comic.modified).getFullYear().toString() || 'Unknown'}
             />
-          </Link>
+          </NavLink>
         ))}
       </div>
       {load ? (
-        <div className="flex justify-center animate-spin">
-          <BiLoaderCircle className="w-20 h-20 text-secondary" />
-        </div>
+        <Loader/>
       ) : (
         <div className="flex justify-center">
           <ButtonCharacters loadCharacters={loadMoreCharacters} />
+        </div>
+      )}
+      {errorApi && (
+        <div className="text-center text-red-800 text-2xl">
+          Erro ao buscar os dados! Recarregue a página.
         </div>
       )}
     </div>
