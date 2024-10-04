@@ -5,7 +5,6 @@ import { FiUser } from "react-icons/fi";
 import { CiAt } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import { MdOutlinePassword } from "react-icons/md";
-import { useState } from "react";
 
 const schema = z
   .object({
@@ -44,7 +43,7 @@ export default function FormRegister({
     resolver: zodResolver(schema),
   });
 
-  const [feedbackMessage] = useState<string | null>(null);
+
 
   const onSubmit = (data: FormData) => {
     sessionStorage.setItem("FormData", JSON.stringify(data));
@@ -67,10 +66,6 @@ export default function FormRegister({
       <h1 className="flex justify-center mt-8 mb-6 pt-8 mx-11 items-center font-semibold text-4xl">
         Crie seu herói
       </h1>
-
-      {feedbackMessage && (
-        <div className="text-green-500 text-center mb-4">{feedbackMessage}</div>
-      )}
 
       {errors.name && (
         <span className="ml-7 block text-xs text-secondary">
