@@ -66,11 +66,11 @@ export default function Buy() {
 
 
   return (
-    <div className="grid justify-center"> 
+    <div className="grid justify-center xs: mx-2"> 
     <h1 className="font-extrabold text-blackText text-6xl text-center my-8 xs:text-3xl ls:4xl">Finalize a Compra</h1>
       <div className="text-start w-full max-w-[640px] bg-gray-light rounded-md p-2 sm:p-10  xs:p-4 xs:w-full xs:content-center  ls:p-2">
         
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2">
               <div>
               <GrLocation className="text-secondary w-6 h-6" />
               </div>
@@ -83,7 +83,7 @@ export default function Buy() {
               </div>
               
 
-              <div className="flex flex-col gap-4 mt-8">
+              <form className="flex flex-col gap-4 mt-8">
               <input
                 type="text"
                 id="cep"
@@ -168,11 +168,11 @@ export default function Buy() {
         </div>
         </div>
         
-      </div>
+      </form>
       </div>
 
       <section className="mb-60 max-w-3xl text-start bg-gray-light rounded-md p-10 mt-3 xs:px-2 xs:py-10 xs:max-w-90 xs:mb-10">
-        <div className="flex gap-2 items-center items-center">
+        <div className="flex gap-2">
           <div>
           <PiCurrencyDollarThin className="text-secondary w-6 h-6" />
           </div>
@@ -185,7 +185,7 @@ export default function Buy() {
           </div>
         </div>
 
-        <div className="flex justify-between mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border">{/* 13 */}
+        <div className="flex justify-between mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border">
           <button
             onClick={() => setMethodPayment("Cartão de Crédito")}
             className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg ${
