@@ -22,9 +22,13 @@ export default function NavBar() {
     
   useEffect(() => {
     setHeightNavBar(navRef.current!.clientHeight)
+    window.addEventListener('load', CurrentNavBarHeight);
     window.addEventListener('resize', CurrentNavBarHeight);
 
-    return () => window.removeEventListener('resize', CurrentNavBarHeight);
+    return () => {
+      window.removeEventListener('load', CurrentNavBarHeight);
+      window.removeEventListener('resize', CurrentNavBarHeight)
+    };
   }, [])
 
   function ActivePage(page: 'comics' | 'characters' | null) {
