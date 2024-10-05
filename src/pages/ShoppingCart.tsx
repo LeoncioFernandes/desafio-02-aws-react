@@ -11,11 +11,12 @@ export default function ShoppingCart() {
       <h1 className="text-center font-extrabold text-[32px] sm:text-6xl my-8 sm:mt-8">Meu Carrinho</h1>
       {cart.items.length != 0 ? cart.items.map(item => (
         <CartItemCard
-          id={item.id}
           key={item.id}
+          id={item.id}
           img={item.img}
           title={item.title}
-          price={item.price}
+          counter={item.counter!}
+          totalItemValue={item.totalItemPrice!}
         />
       )) : <EmptyCart />}
 

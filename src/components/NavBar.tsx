@@ -3,6 +3,7 @@ import { IoSearchSharp, IoCartOutline, IoClose } from "react-icons/io5";
 import { PiSignOutBold } from "react-icons/pi";
 import { MdOutlineMenu } from "react-icons/md";
 import { useEffect, useRef, useState } from 'react';
+import { useCart } from '../context/useShoppingCart';
 
 export default function NavBar() {
 
@@ -13,6 +14,8 @@ export default function NavBar() {
 
   const navRef = useRef<HTMLElement>(null)
   const [heightNavBar, setHeightNavBar] = useState<number>(0)
+
+  const cart = useCart()
 
   function CurrentNavBarHeight(){
     if(navRef.current){
@@ -119,7 +122,9 @@ export default function NavBar() {
               }
               return (
                 <div className=' relative w-10 md:w-14 h-10 md:h-14 p-2'>
-                  <div className={`absolute right-2 md:right-2.5 top-1 md:top-1.5 w-1.5 md:w-2 h-1.5 md:h-2 rounded-full group-hover:bg-tertiary ${isActive ? "bg-tertiary" : "bg-secondary"}`}></div>
+                  {cart.items.length > 0 && (
+                    <div className={`absolute right-2 md:right-2.5 top-1 md:top-1.5 w-1.5 md:w-2 h-1.5 md:h-2 rounded-full group-hover:bg-tertiary ${isActive ? "bg-tertiary" : "bg-secondary"}`}></div>
+                  )}
                   <IoCartOutline className='w-full h-full' />
                 </div>
               )

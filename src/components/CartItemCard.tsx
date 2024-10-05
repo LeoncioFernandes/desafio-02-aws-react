@@ -1,27 +1,21 @@
-import { useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
 import { FaMinusCircle } from 'react-icons/fa';
 import { HiOutlineTrash } from "react-icons/hi2";
 import { useCart } from '../context/useShoppingCart';
-import { Link } from 'react-router-dom';
 
 type CartItem = {
-    id: string,
+    id: number,
     title: string,
     img: string,
-    price: number
+    counter: number,
+    totalItemValue: number;
 }
 
-export default function CartItemCard({ id, title, img, price }: CartItem) {
-    const [counter, setCounter] = useState(1)
+export default function CartItemCard({ id, title, img, counter, totalItemValue }: CartItem) {
 
-    const handleDecrement = () => {
-        if (counter > 1) {
-            setCounter(counter - 1)
-        }
-    }
+    const handleDecrement = useCart(state => state.decrementItem)
 
-    const handleIncrement = () => setCounter(counter + 1)
+    const handleIncrement = useCart(state => state.incrementItem)
 
     const removeItem = useCart(state => state.removeItem)
 
@@ -41,11 +35,11 @@ export default function CartItemCard({ id, title, img, price }: CartItem) {
                         <div className='flex flex-col items-center sm:items-start sm:h-[170px] sm:justify-between gap-4'>
                             <span className="text-base sm:text-[32px] sm:font-medium">{title}</span>
                             <div className='flex sm:mb-8 w-28 h-8 justify-between items-center bg-white rounded-full'>
-                                <button onClick={handleDecrement}>
-                                    <FaMinusCircle className={`w-8 h-8 ${counter < 2 ? 'text-gray-dark' : 'text-secondary'}`} />
+                                <button onClick={() => {if(counter > 1) handleDecrement(id)}}>
+                                    <FaMinusCircle className={`w-8 h-8 ${counter < 2 ? 'text-gray-dark cursor-default' : 'text-secondary'}`} />
                                 </button>
                                 <span>{counter}</span>
-                                <button onClick={handleIncrement}>
+                                <button onClick={() => handleIncrement(id)}>
                                     <FaPlusCircle className='w-8 h-8 text-secondary' />
                                 </button>
                             </div>
@@ -53,7 +47,7 @@ export default function CartItemCard({ id, title, img, price }: CartItem) {
                     </section>
                 </div>
                 <div className='sm:h-[170px] flex items-end'>
-                    <span className='text-3xl font-extrabold'>${price}</span>
+                    <span className='text-3xl font-extrabold'>${totalItemValue.toFixed(2)}</span>
                 </div>
             </div>
         </div>
