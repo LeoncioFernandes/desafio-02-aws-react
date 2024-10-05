@@ -34,17 +34,17 @@ export default function LoginRegister() {
   return (
     <div className=" h-svh flex overflow-hidden">
 
-      <div className="w-1/2 h-full flex justify-center items-center bg-green-400 ">
-        <img src={spider} className="object-cover h-full w-full " />
+      <div className="w-1/2 h-full flex justify-center items-center  ">
+        <img src={spider} className="object-cover h-full w-full hidden md:block " />
       </div>
 
-      <div className="w-1/2 flex justify-center items-center flex-col">
+      <div className="md:w-1/2 w-full h-screen flex justify-center items-center flex-col px-8">
 
-        <div className="logo mb-6 ">
+        <div className="logo mb-6  flex justify-center items-center">
           <img src={logo} className="w-auto h-16"/>
         </div>
 
-        <div className="">
+        <div className="flex justify-center items-center">
           {showLogin ? (
             <FormLogin toggleLink={toggleLink} />
           ) : (
