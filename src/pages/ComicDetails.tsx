@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Loader from '../components/Loader';
 import { MdAddShoppingCart } from "react-icons/md";
+import { useCart } from '../context/useShoppingCart';
 
 interface Image{
   path: string,
@@ -75,14 +76,7 @@ export default function ComicsDetails() {
     return dt.getFullYear().toString();
   }
 
-  async function addCart({id, title, price, urlImage}: AddCart){
-    await console.log(`id: ${id}, title: ${title}, price: ${price}, urlImage: ${urlImage}`)
-  }
-
-  function buyNow({id, title, price, urlImage}: AddCart){
-    addCart({id, title, price, urlImage});
-    navigate("/shopping-cart");
-  }
+  const addToCart = useCart(state => state.addItem)
 
   useEffect(()=>{
     getComic();
@@ -203,11 +197,11 @@ export default function ComicsDetails() {
                 <div className='flex flex-col-reverse sm:flex-row gap-4 w-full justify-between font-extrabold text-sm'>
                   <button
                     className='flex gap-1 items-center justify-center w-full px-4 py-2 border border-tertiary rounded-full hover:bg-tertiary hover:text-primary'
-                    onClick={() => addCart({
-                      id: cmic.id,
+                    onClick={() => addToCart({
+                      id: cmic.id.toString(),
                       title: cmic.title,
                       price: cmic.prices[0].price,
-                      urlImage: cmic.thumbnail.path + "." + cmic.thumbnail.extension
+                      img: cmic.thumbnail.path + "." + cmic.thumbnail.extension
                     })}
                   >
                     <MdAddShoppingCart className='w-4 h-4' />
@@ -215,12 +209,15 @@ export default function ComicsDetails() {
                   </button>
                   <button
                     className='w-full px-4 py-2 text-primary border border-transparent bg-secondary rounded-full hover:bg-primary hover:border-secondary hover:text-secondary'
-                    onClick={() => buyNow({
-                      id: cmic.id,
-                      title: cmic.title,
-                      price: cmic.prices[0].price,
-                      urlImage: cmic.thumbnail.path + "." + cmic.thumbnail.extension
-                    })}
+                    onClick={() => {
+                      addToCart({
+                        id: cmic.id.toString(),
+                        title: cmic.title,
+                        price: cmic.prices[0].price,
+                        img: cmic.thumbnail.path + "." + cmic.thumbnail.extension
+                      })
+                      navigate("/shopping-cart")
+                    }}
                   >
                     Comprar agora
                   </button>

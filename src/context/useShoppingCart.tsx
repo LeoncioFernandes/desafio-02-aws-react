@@ -4,7 +4,7 @@ type Item = {
     id: string,
     img: string,
     title: string,
-    price: string
+    price: number
 }
 
 interface CartItemState {
