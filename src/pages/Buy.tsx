@@ -66,9 +66,9 @@ export default function Buy() {
 
 
   return (
-    <div className="grid justify-center xs: mx-2"> 
-    <h1 className="font-extrabold text-blackText text-6xl text-center my-8 xs:text-3xl ls:4xl">Finalize a Compra</h1>
-      <div className="text-start w-full max-w-[640px] bg-gray-light rounded-md p-2 sm:p-10  xs:p-4 xs:w-full xs:content-center  ls:p-2">
+    <div className="grid justify-center xs:mx-2"> 
+    <h1 className="font-extrabold text-blackText text-6xl text-center my-8 xs:text-3xl">Finalize a Compra</h1>
+      <div className="text-start w-full max-w-[640px] bg-gray-light rounded-md p-2 sm:p-10  xs:p-4 xs:w-full xs:content-center">
         
           <div className="flex gap-2">
               <div>
@@ -171,7 +171,7 @@ export default function Buy() {
       </form>
       </div>
 
-      <section className="mb-60 max-w-3xl text-start bg-gray-light rounded-md p-10 mt-3 xs:px-2 xs:py-10 xs:max-w-90 xs:mb-10">
+      <section className="mb-60 max-w-3xl text-start bg-gray-light rounded-md p-10 mt-3 xs:px-2 xs:py-10 xs:max-w-90 xs:mb-20">
         <div className="flex gap-2">
           <div>
           <PiCurrencyDollarThin className="text-secondary w-6 h-6" />
@@ -185,10 +185,10 @@ export default function Buy() {
           </div>
         </div>
 
-        <div className="flex justify-between mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border">
+        <div className="flex  mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border">
           <button
             onClick={() => setMethodPayment("Cartão de Crédito")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg ${
+            className={`flex  items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap  ${
               methodPayment === "Cartão de Crédito"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
@@ -199,7 +199,7 @@ export default function Buy() {
 
           <button
             onClick={() => setMethodPayment("Cartão de Débito")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg ${
+            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
               methodPayment === "Cartão de Débito"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
@@ -211,7 +211,7 @@ export default function Buy() {
 
           <button
             onClick={() => setMethodPayment("Dinheiro")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg ${
+            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
               methodPayment === "Dinheiro"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
@@ -224,35 +224,35 @@ export default function Buy() {
       </section>
 
 
-      <footer className="grid fixed bottom-0 w-full bg-primary justify-center border-t border-t-gray-dark xs:mt-21 ">
-        <div className="grid grid-cols-2 gap-4 w-[720px] justify-between my-4 xs:hidden">
-  <div className="grid gap-y-3">
+      <footer className="grid fixed bottom-0 w-full bg-primary border-t border-t-gray-dark justify-center">
+  <div className="flex flex-col gap-4 w-[620px] my-4 xs:hidden">
+    
+    <div className="flex w-full justify-between flex-wrap ">
+      <p>Total de Itens</p>
+      <p>R$ {totalValue.toFixed(2)}</p>
+    </div>
 
-    <p>Total de Itens</p>
-    <p>Entrega</p>
-    <p><strong>Total</strong></p>
+    <div className="flex justify-between flex-wrap ">
+      <p>Entrega</p>
+      <p>R$ {deliveryFee}</p>
+    </div>
+
+    <div className="flex justify-between flex-wrap">
+      <p><strong>Total</strong></p>
+      <p><strong>R$ {(totalValue + parseFloat(deliveryFee)).toFixed(2)}</strong></p>
+    </div>
   </div>
 
-
-  <div className="grid text-end gap-y-3">
-    <p>R$ {totalValue.toFixed(2)}</p>
-    <p>R$ {deliveryFee}</p>
-    <p><strong>R$ {(totalValue + parseFloat(deliveryFee)).toFixed(2)}</strong></p>
-  </div>
-</div>
-
-<div className="flex justify-center mt-4"> 
+  <div className="flex justify-center mt-4 ">
     <button 
       type="submit"
-      className="bg-secondary text-white px-14 py-2 rounded-lg mb-4"
+      className="bg-secondary text-white px-14 py-2 rounded-lg mb-4 "
       onClick={checkout}
     >
       Finalizar Compra
     </button>
-</div>
-
-            
-        </footer> 
+  </div>
+</footer>
  </div> 
 
   )
