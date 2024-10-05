@@ -75,7 +75,6 @@ export default function Buy() {
   };
 
   const handleFinishPurchase = () => {
-    // Capturando os dados em um objeto
     if(methodPayment.length<3){
       setError(true);
       return true;  
@@ -93,7 +92,6 @@ export default function Buy() {
 
     console.log("formData", formData)
 
-    // Validando os dados com zod
     const validation = checkoutSchema.safeParse(formData);
 
     console.log("VALIDACAO", validation)
