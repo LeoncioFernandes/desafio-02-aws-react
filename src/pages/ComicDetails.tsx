@@ -45,13 +45,6 @@ interface MoreComics {
   thumbnail: Image
 }
 
-interface AddCart {
-  id: number,
-  title: string,
-  urlImage: string,
-  price: number,
-}
-
 export default function ComicsDetails() {
   
   const [comic, setComic] = useState<Comics[]>([]);
@@ -77,6 +70,7 @@ export default function ComicsDetails() {
   }
 
   const addToCart = useCart(state => state.addItem)
+  const buyItemNow = useCart(state => state.buyItemNow)
 
   useEffect(()=>{
     getComic();
@@ -198,7 +192,7 @@ export default function ComicsDetails() {
                   <button
                     className='flex gap-1 items-center justify-center w-full px-4 py-2 border border-tertiary rounded-full hover:bg-tertiary hover:text-primary'
                     onClick={() => addToCart({
-                      id: cmic.id.toString(),
+                      id: cmic.id,
                       title: cmic.title,
                       price: cmic.prices[0].price,
                       img: cmic.thumbnail.path + "." + cmic.thumbnail.extension
@@ -210,8 +204,8 @@ export default function ComicsDetails() {
                   <button
                     className='w-full px-4 py-2 text-primary border border-transparent bg-secondary rounded-full hover:bg-primary hover:border-secondary hover:text-secondary'
                     onClick={() => {
-                      addToCart({
-                        id: cmic.id.toString(),
+                      buyItemNow({
+                        id: cmic.id,
                         title: cmic.title,
                         price: cmic.prices[0].price,
                         img: cmic.thumbnail.path + "." + cmic.thumbnail.extension
@@ -234,7 +228,7 @@ export default function ComicsDetails() {
                         to={`/comics/${comic.id}`}
                       >
                         <div className='w-full h-[167px] overflow-hidden'>
-                          <img className='w-full h-full object-cover' src={comic.thumbnail.path + "." + comic.thumbnail.extension} alt="" />
+                          <img className='w-full h-full object-cover object-left-top' src={comic.thumbnail.path + "." + comic.thumbnail.extension} alt="" />
                         </div>
                       </NavLink>
                       <p className='text-xs font-medium'>{comic.title}</p>
