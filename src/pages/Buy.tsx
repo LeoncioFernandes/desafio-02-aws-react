@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +24,7 @@ export default function Buy() {
   const { register, handleSubmit, setValue, getValues, formState: { errors }, reset, trigger } = useForm({
     resolver: zodResolver(checkoutSchema),
   });
+
   const cepRef = useRef<HTMLInputElement>(null);
   const totalCartValue = useCart((state) => state.getTotalCartPrice());
   const [deliveryFee, setDeliveryFee] = useState(0); 
@@ -38,7 +39,7 @@ export default function Buy() {
     setPaymentMethod(method);
     setValue('methodPayment', method);
   };
-
+  
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setValue('cep', value);
@@ -59,10 +60,11 @@ export default function Buy() {
           setValue('neighborhood', data.bairro);
           setValue('city', data.localidade);
           setValue('state', data.uf);
+
+          if (cepRef.current) {
+            cepRef.current.blur();
+          }
         } 
-        if (cepRef.current) {
-          cepRef.current.blur(); // Desfoca o campo
-        }
       } catch (error) {
         console.error("Erro ao buscar o CEP:", error);
       }
@@ -117,7 +119,8 @@ export default function Buy() {
         <input
             type="text"
            placeholder="00000-000"
-            {...register("cep")}
+           {...register("cep", { required: true, onChange: handleCepChange })}
+           ref={cepRef}
             onChange={handleCepChange}
       className="w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
         />
