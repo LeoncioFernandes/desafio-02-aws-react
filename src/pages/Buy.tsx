@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +25,7 @@ export default function Buy() {
     resolver: zodResolver(checkoutSchema),
   });
 
+  const cepRef = useRef<HTMLInputElement>(null);
   const totalCartValue = useCart((state) => state.getTotalCartPrice());
   const [deliveryFee, setDeliveryFee] = useState(0); 
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -38,16 +39,20 @@ export default function Buy() {
     setPaymentMethod(method);
     setValue('methodPayment', method);
   };
-
+  
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setValue('cep', value);
-
+  
     await trigger('cep');
-    
-    if (value.length === 9) {
+  
+    const cepRegex = /^(?:\d{5}-\d{3}|\d{8})$/;
+  
+    const numericValue = value.replace(/\D/g, '');
+  
+    if (cepRegex.test(value)) {
       try {
-        const response = await axios.get(`https://viacep.com.br/ws/${value}/json/`);
+        const response = await axios.get(`https://viacep.com.br/ws/${numericValue}/json/`);
         const data = response.data;
   
         if (!data.erro) {
@@ -55,14 +60,17 @@ export default function Buy() {
           setValue('neighborhood', data.bairro);
           setValue('city', data.localidade);
           setValue('state', data.uf);
-        } else {
-          console.error("CEP não encontrado.");
-        }
+
+          if (cepRef.current) {
+            cepRef.current.blur();
+          }
+        } 
       } catch (error) {
         console.error("Erro ao buscar o CEP:", error);
       }
-    }
+    } 
   };
+  
 
   const checkout = () => {
     const error = handleFinishPurchase();
@@ -111,9 +119,10 @@ export default function Buy() {
         <input
             type="text"
            placeholder="00000-000"
-            {...register("cep")}
+           {...register("cep", { required: true, onChange: handleCepChange })}
+           ref={cepRef}
             onChange={handleCepChange}
-      className="max-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
+      className="w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
         />
         {errors.cep && typeof errors.cep.message === 'string' && (
       <p className="text-red-500 text-sm mt-1">{errors.cep.message}</p>)}
@@ -142,50 +151,59 @@ export default function Buy() {
       <p className="text-red-500 text-sm mt-1">{errors.number.message}</p>)}
             </div>
 
-            <div className="flex flex-col flex-auto">
+            <div className="flex flex-col flex-auto relative">
               <input
                 type="text"
                 placeholder="Complemento"
                 {...register("complement")}
                 className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-              />
+              />         
+        <span className="absolute right-3 top-3 text-gray-dark text-sm">
+          Opcional
+        </span>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder="Bairro"
-                {...register("neighborhood")}
-                className="sm:min-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-              />
-                 {errors.neighborhood && typeof errors.neighborhood.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.neighborhood.message}</p>)}
-            </div>
+  <div className="flex flex-col">
+    <input
+      type="text"
+      placeholder="Bairro"
+      {...register("neighborhood")}
+      className="sm:min-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
+    />
+    {errors.neighborhood && typeof errors.neighborhood.message === 'string' && (
+      <p className="text-red-500 text-sm mt-1">{errors.neighborhood.message}</p>
+    )}
+  </div>
 
-            <div className="flex flex-col flex-auto">
-              <input
-                type="text"
-                placeholder="Cidade"
-                {...register("city")}
-                className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-              />
-                  {errors.city && typeof errors.city.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.city.message}</p> )}
-            </div>
+  <div className="flex xs:flex-row gap-3 flex-auto">
+    <div className="flex flex-col flex-1">
+      <input
+        type="text"
+        placeholder="Cidade"
+        {...register("city")}
+        className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
+      />
+      {errors.city && typeof errors.city.message === 'string' && (
+        <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
+      )}
+    </div>
 
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder="UF"
-                {...register("state")}
-                className="w-16 p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
-              />
-              {errors.state && typeof errors.state.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>)}
+    <div className="flex flex-col w-16">
+      <input
+        type="text"
+        placeholder="UF"
+        {...register("state")}
+        className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
+      />
+      {errors.state && typeof errors.state.message === 'string' && (
+        <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
+      )}
             </div>
           </div>
+        </div>
+
         </form>
       </div>
 
@@ -202,14 +220,14 @@ export default function Buy() {
           </div>
         </div>
 
-        <div className="flex mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border">
+        <div className="grid grid-cols-3 mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border xs:grid-cols-1">
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Cartão de Crédito")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
+            className={`flex items-center gap-3 p-4 text-blackText  rounded-lg w-[206px] xs:w-full  ${
               getValues('methodPayment') === "Cartão de Crédito"
                 ? "bg-secondary2 border-2 border-secondary"
-                : "bg-gray-dark"
+                : "bg-gray-dark border-transparent"
             }`}
           >
             <PiCreditCardLight className="text-secondary w-4 h-4"/>  CARTÃO DE CRÉDITO
@@ -218,10 +236,10 @@ export default function Buy() {
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Cartão de Débito")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
               getValues('methodPayment') === "Cartão de Débito"
                 ? "bg-secondary2 border-2 border-secondary"
-                : "bg-gray-dark"
+                : "bg-gray-dark border-transparent"
             }`}
           >
             <PiBank className="text-secondary w-4 h-4"/>
@@ -231,10 +249,10 @@ export default function Buy() {
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Dinheiro")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
               getValues('methodPayment') === "Dinheiro"
                 ? "bg-secondary2 border-2 border-secondary"
-                : "bg-gray-dark"
+                : "bg-gray-dark border-transparent"
             }`}
           >
             <FaMoneyBill className="text-secondary w-4 h-4"/> DINHEIRO
@@ -267,7 +285,7 @@ export default function Buy() {
         <div className="flex justify-center mt-4">
           <button 
           type='button'
-            className="bg-secondary text-white px-14 py-2 rounded-lg mb-4"
+            className="bg-secondary text-white px-14 py-2 rounded-lg mb-4 hover:bg-primary hover:text-secondary hover:border-secondary transition duration-300 border border-transparent"
             onClick={handleSubmit(checkout)}
           >
             Finalizar Compra
@@ -276,4 +294,4 @@ export default function Buy() {
       </footer>
     </div>
   );
-}
+};
