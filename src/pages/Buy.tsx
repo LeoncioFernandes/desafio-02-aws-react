@@ -39,6 +39,9 @@ export default function Buy() {
     setValue('methodPayment', method);
   };
 
+  
+
+
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setValue('cep', value);
@@ -142,13 +145,16 @@ export default function Buy() {
       <p className="text-red-500 text-sm mt-1">{errors.number.message}</p>)}
             </div>
 
-            <div className="flex flex-col flex-auto">
+            <div className="flex flex-col flex-auto relative">
               <input
                 type="text"
                 placeholder="Complemento"
                 {...register("complement")}
                 className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-              />
+              />         
+        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-dark">
+          Opcional
+        </span>
             </div>
           </div>
 
@@ -202,11 +208,11 @@ export default function Buy() {
           </div>
         </div>
 
-        <div className="flex mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border">
+        <div className="grid grid-cols-3 mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border xs:grid-cols-1">
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Cartão de Crédito")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
+            className={`flex items-center gap-3 p-4 text-blackText  rounded-lg whitespace-nowrap  ${
               getValues('methodPayment') === "Cartão de Crédito"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
@@ -218,7 +224,7 @@ export default function Buy() {
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Cartão de Débito")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg  ${
               getValues('methodPayment') === "Cartão de Débito"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
@@ -231,7 +237,7 @@ export default function Buy() {
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Dinheiro")}
-            className={`flex items-center gap-3 w-full px-4 py-4 text-blackText text-center rounded-lg whitespace-nowrap ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg whitespace-nowrap ${
               getValues('methodPayment') === "Dinheiro"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark"
@@ -267,7 +273,7 @@ export default function Buy() {
         <div className="flex justify-center mt-4">
           <button 
           type='button'
-            className="bg-secondary text-white px-14 py-2 rounded-lg mb-4"
+            className="bg-secondary text-white px-14 py-2 rounded-lg mb-4 hover:bg-primary hover:text-secondary hover:border-secondary transition duration-300 border border-transparent"
             onClick={handleSubmit(checkout)}
           >
             Finalizar Compra
@@ -276,4 +282,4 @@ export default function Buy() {
       </footer>
     </div>
   );
-}
+};
