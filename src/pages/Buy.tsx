@@ -116,7 +116,7 @@ export default function Buy() {
            placeholder="00000-000"
             {...register("cep")}
             onChange={handleCepChange}
-      className="max-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
+      className="w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
         />
         {errors.cep && typeof errors.cep.message === 'string' && (
       <p className="text-red-500 text-sm mt-1">{errors.cep.message}</p>)}
@@ -152,7 +152,7 @@ export default function Buy() {
                 {...register("complement")}
                 className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
               />         
-        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-dark">
+        <span className="absolute right-3 top-3 text-gray-dark text-sm">
           Opcional
         </span>
             </div>
@@ -212,10 +212,10 @@ export default function Buy() {
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Cartão de Crédito")}
-            className={`flex items-center gap-3 p-4 text-blackText  rounded-lg whitespace-nowrap  ${
+            className={`flex items-center gap-3 p-4 text-blackText  rounded-lg w-[206px] xs:w-full  ${
               getValues('methodPayment') === "Cartão de Crédito"
                 ? "bg-secondary2 border-2 border-secondary"
-                : "bg-gray-dark"
+                : "bg-gray-dark border-transparent"
             }`}
           >
             <PiCreditCardLight className="text-secondary w-4 h-4"/>  CARTÃO DE CRÉDITO
@@ -224,10 +224,10 @@ export default function Buy() {
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Cartão de Débito")}
-            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg  ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
               getValues('methodPayment') === "Cartão de Débito"
                 ? "bg-secondary2 border-2 border-secondary"
-                : "bg-gray-dark"
+                : "bg-gray-dark border-transparent"
             }`}
           >
             <PiBank className="text-secondary w-4 h-4"/>
@@ -237,10 +237,10 @@ export default function Buy() {
           <button
           type="button"
           onClick={() => handlePaymentMethodChange("Dinheiro")}
-            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg whitespace-nowrap ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
               getValues('methodPayment') === "Dinheiro"
                 ? "bg-secondary2 border-2 border-secondary"
-                : "bg-gray-dark"
+                : "bg-gray-dark border-transparent"
             }`}
           >
             <FaMoneyBill className="text-secondary w-4 h-4"/> DINHEIRO
