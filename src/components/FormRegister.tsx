@@ -5,6 +5,7 @@ import { FiUser } from "react-icons/fi";
 import { CiAt } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import { MdOutlinePassword } from "react-icons/md";
+import { useCreateLoginUser } from "../context/useCreateLoginUser";
 
 const schema = z
   .object({
@@ -43,19 +44,30 @@ export default function FormRegister({
     resolver: zodResolver(schema),
   });
 
-
+  const createUser = useCreateLoginUser();
 
   const onSubmit = (data: FormData) => {
-    sessionStorage.setItem("FormData", JSON.stringify(data));
-    localStorage.setItem("FormData", JSON.stringify(data));
 
-    console.log("Dados armazenados com sucesso", data);
+    const successCadUser = createUser.addUser({name: data.name, email: data.email, password: data.password})
 
-    setTimeout(() => {
-      if (onSuccess) {
-        onSuccess();
-      }
-    }, 2000);
+    if(!successCadUser){
+      return console.log("Email já cadastrado no sistema. Não é possível cadastrar usuário.")
+    }
+    
+    console.log("Usuário cadastrado com sucesso!")
+    onSuccess!();
+
+    
+    // sessionStorage.setItem("FormData", JSON.stringify(data));
+    // localStorage.setItem("FormData", JSON.stringify(data));
+
+    // console.log("Dados armazenados com sucesso", data);
+
+    // setTimeout(() => {
+    //   if (onSuccess) {
+    //     onSuccess();
+    //   }
+    // }, 2000);
   };
 
   return (

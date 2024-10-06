@@ -1,4 +1,4 @@
-import { Routes, Route, NavLink } from "react-router-dom"
+import { Routes, Route, NavLink, useNavigate } from "react-router-dom"
 import NavBar from "./components/NavBar"
 import Comics from "./pages/Comics"
 import LoginRegister from "./pages/LoginRegister"
@@ -9,10 +9,19 @@ import ShoppingCart from "./pages/ShoppingCart"
 import Buy from "./pages/Buy"
 import Sucessfull from "./pages/Sucessfull"
 import { useState } from "react"
+import { userLoged } from "./context/useLogedUser"
 
 function App() {
 
   const [viewNavBar, setViewNavBar] = useState<boolean>(false)
+
+  const navigate = useNavigate();
+  const useLoged = userLoged();
+  if(!useLoged.userLoged.isLoged){
+    if(viewNavBar){
+      navigate("/");
+    }
+  }
 
   return (
     <>
