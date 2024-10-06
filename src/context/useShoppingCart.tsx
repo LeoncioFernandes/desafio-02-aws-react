@@ -18,6 +18,7 @@ interface CartItemState {
     decrementItem: (i: number) => void,
     removeItem: (i: number) => void,
     getTotalCartPrice: () => number,
+    clearCart: () => void 
 }
 
 export const useCart = create<CartItemState>()(
@@ -73,6 +74,7 @@ export const useCart = create<CartItemState>()(
             }, 0);
             return totCartPrice;
         },
+        clearCart: () => set({ items: [] }),
     }),
     { name: 'cart-storage' }
   )
