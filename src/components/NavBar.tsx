@@ -1,9 +1,10 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { IoSearchSharp, IoCartOutline, IoClose } from "react-icons/io5";
 import { PiSignOutBold } from "react-icons/pi";
 import { MdOutlineMenu } from "react-icons/md";
 import { useEffect, useRef, useState } from 'react';
 import { useCart } from '../context/useShoppingCart';
+import { userLoged } from '../context/useLogedUser';
 
 export default function NavBar() {
 
@@ -15,7 +16,9 @@ export default function NavBar() {
   const navRef = useRef<HTMLElement>(null)
   const [heightNavBar, setHeightNavBar] = useState<number>(0)
 
+  const navigate = useNavigate();
   const cart = useCart()
+  const logOffUser = userLoged();
 
   function CurrentNavBarHeight(){
     if(navRef.current){
@@ -56,6 +59,11 @@ export default function NavBar() {
     setMenuVisible(false);
     document.body.style.overflow = ""   
   };
+
+  const logOff = () => {
+    logOffUser.removeUserLoged();
+    navigate("/");
+  }
 
   return (
     <>
@@ -132,13 +140,13 @@ export default function NavBar() {
           </NavLink>
           
           {/* SAIR */}
-          <NavLink
+          <button
             className="hidden md:flex items-center gap-2 text-primary bg-secondary px-3 py-2 rounded-[9px] border-[1px] border-transparent hover:bg-primary hover:text-secondary hover:border-secondary"
-            to="/"
+            onClick={logOff}
           >
             <PiSignOutBold className='w-6 h-6' />
             Sair
-          </NavLink>
+          </button>
 
           {/* MENU SANDUÍCHE */}
           <button 
@@ -207,13 +215,13 @@ export default function NavBar() {
           </div>
           
           {/* SAIR */}
-          <NavLink
+          <button
             className="flex items-center justify-center gap-2 text-primary bg-secondary py-1 rounded-[9px] border-[1px] border-transparent active:bg-primary active:text-secondary active:border-secondary"
-            to="/"
+            onClick={logOff}
           >
             <PiSignOutBold className='w-4 h-4' />
             <div>Sair</div>
-          </NavLink>
+          </button>
 
         </div>
       </div>

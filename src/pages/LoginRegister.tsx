@@ -10,24 +10,22 @@ export default function LoginRegister() {
   const toggleLink = showLogin ? (
     <span>
       Não tem uma conta?{" "}
-      <a
-        href="#"
+      <button
         onClick={() => setShowLogin(false)}
         className="text-secondary hover:text-secondary2 transition-colors"
       >
         Clique aqui!
-      </a>
+      </button>
     </span>
   ) : (
     <span>
       Já tem uma conta?{" "}
-      <a
-        href="#"
+      <button
         onClick={() => setShowLogin(true)}
         className="text-secondary hover:text-secondary2 transition-colors"
       >
         Clique aqui!
-      </a>
+      </button>
     </span>
   );
 

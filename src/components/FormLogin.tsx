@@ -2,8 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CiAt } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { useCreateLoginUser } from "../context/useCreateLoginUser";
+import { userLoged } from "../context/useLogedUser";
 
 type FormLoginProps = {
   toggleLink: React.ReactNode;
@@ -30,21 +32,36 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
     resolver: zodResolver(schema),
   });
 
+
+  const navigate = useNavigate();
+  const loginUser = useCreateLoginUser();
+  const logedUser = userLoged();
+
   const onSubmit = (data: FormData) => {
-    const storedData = sessionStorage.getItem("FormData");
 
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
+    const findUser = loginUser.findUser(data.email, data.password);
 
-      if (
-        parsedData.email === data.email &&
-        parsedData.password === data.password
-      ) {
-        console.log("Login bem sucedido", data);
-      } else {
-        console.log("Usuário não encontrado", data);
-      }
+    if(findUser){
+      logedUser.addUserLoged({id: findUser.id!, name: findUser.name!, email: findUser.email, isLoged: true })
+      return navigate("/comics")
     }
+
+    console.log("Usuário não encontrado");
+
+    // const storedData = sessionStorage.getItem("FormData");
+
+    // if (storedData) {
+    //   const parsedData = JSON.parse(storedData);
+
+    //   if (
+    //     parsedData.email === data.email &&
+    //     parsedData.password === data.password
+    //   ) {
+    //     console.log("Login bem sucedido", data);
+    //   } else {
+    //     console.log("Usuário não encontrado", data);
+    //   }
+    // }
   };
 
   return (
@@ -96,7 +113,7 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
         type="submit"
         className="bg-secondary font-bold text-2xl text-primary border-2 flex items-center justify-center border-secondary w-72  h-11 rounded-md mx-4 hover:bg-primary hover:text-secondary hover:border-secondary transition-colors"
       >
-        <Link to={"/comics"}>Entrar</Link>
+        Entrar
       </button>
 
       <div className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
