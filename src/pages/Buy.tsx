@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,7 @@ export default function Buy() {
   const { register, handleSubmit, setValue, getValues, formState: { errors }, reset, trigger } = useForm({
     resolver: zodResolver(checkoutSchema),
   });
-
+  const cepRef = useRef<HTMLInputElement>(null);
   const totalCartValue = useCart((state) => state.getTotalCartPrice());
   const [deliveryFee, setDeliveryFee] = useState(0); 
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -39,18 +39,19 @@ export default function Buy() {
     setValue('methodPayment', method);
   };
 
-  
-
-
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setValue('cep', value);
-
+  
     await trigger('cep');
-    
-    if (value.length === 9) {
+  
+    const cepRegex = /^(?:\d{5}-\d{3}|\d{8})$/;
+  
+    const numericValue = value.replace(/\D/g, '');
+  
+    if (cepRegex.test(value)) {
       try {
-        const response = await axios.get(`https://viacep.com.br/ws/${value}/json/`);
+        const response = await axios.get(`https://viacep.com.br/ws/${numericValue}/json/`);
         const data = response.data;
   
         if (!data.erro) {
@@ -58,14 +59,16 @@ export default function Buy() {
           setValue('neighborhood', data.bairro);
           setValue('city', data.localidade);
           setValue('state', data.uf);
-        } else {
-          console.error("CEP não encontrado.");
+        } 
+        if (cepRef.current) {
+          cepRef.current.blur(); // Desfoca o campo
         }
       } catch (error) {
         console.error("Erro ao buscar o CEP:", error);
       }
-    }
+    } 
   };
+  
 
   const checkout = () => {
     const error = handleFinishPurchase();
@@ -159,39 +162,45 @@ export default function Buy() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder="Bairro"
-                {...register("neighborhood")}
-                className="sm:min-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-              />
-                 {errors.neighborhood && typeof errors.neighborhood.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.neighborhood.message}</p>)}
-            </div>
+  <div className="flex flex-col">
+    <input
+      type="text"
+      placeholder="Bairro"
+      {...register("neighborhood")}
+      className="sm:min-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
+    />
+    {errors.neighborhood && typeof errors.neighborhood.message === 'string' && (
+      <p className="text-red-500 text-sm mt-1">{errors.neighborhood.message}</p>
+    )}
+  </div>
 
-            <div className="flex flex-col flex-auto">
-              <input
-                type="text"
-                placeholder="Cidade"
-                {...register("city")}
-                className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-              />
-                  {errors.city && typeof errors.city.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.city.message}</p> )}
-            </div>
+  <div className="flex xs:flex-row gap-3 flex-auto">
+    <div className="flex flex-col flex-1">
+      <input
+        type="text"
+        placeholder="Cidade"
+        {...register("city")}
+        className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
+      />
+      {errors.city && typeof errors.city.message === 'string' && (
+        <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
+      )}
+    </div>
 
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder="UF"
-                {...register("state")}
-                className="w-16 p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
-              />
-              {errors.state && typeof errors.state.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>)}
+    <div className="flex flex-col w-16">
+      <input
+        type="text"
+        placeholder="UF"
+        {...register("state")}
+        className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
+      />
+      {errors.state && typeof errors.state.message === 'string' && (
+        <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
+      )}
             </div>
           </div>
+        </div>
+
         </form>
       </div>
 
