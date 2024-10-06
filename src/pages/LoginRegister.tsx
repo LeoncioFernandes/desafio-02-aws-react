@@ -3,9 +3,25 @@ import FormRegister from "../components/FormRegister";
 import logo from "../assets/Logo.png";
 import spider from "../assets/spider-man.png";
 import React from "react";
+import { toast, ToastContainer } from "react-toastify";
+
 
 export default function LoginRegister() {
   const [showLogin, setShowLogin] = React.useState(true);
+
+  const [successLogin , setSuccessLogin] = React.useState(false);
+
+  if (successLogin) {
+     toast.success("Usuário cadastrado com sucesso!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
 
   const toggleLink = showLogin ? (
     <span>
@@ -29,7 +45,10 @@ export default function LoginRegister() {
     </span>
   );
 
+
   return (
+    <>
+    <ToastContainer />
     <div className=" h-svh flex overflow-hidden">
 
       <div className="w-1/2 h-full flex justify-center items-center  ">
@@ -49,10 +68,12 @@ export default function LoginRegister() {
             <FormRegister
               toggleLink={toggleLink}
               onSuccess={() => setShowLogin(true)}
+              setSuccessLogin={() => setSuccessLogin(true)}
             />
           )}
         </div>
       </div>
     </div>
+    </>
   );
 }
