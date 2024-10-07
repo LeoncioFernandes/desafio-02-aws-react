@@ -142,6 +142,10 @@ export default function ComicsDetails() {
       })
     }
   }
+
+  const generatePrice = (): number => {
+    return parseFloat((Math.random() + 10).toFixed(2))
+  }
   
   return (
     <div className='flex flex-col max-w-[788px] m-auto'>
@@ -163,27 +167,27 @@ export default function ComicsDetails() {
               <div className='flex flex-col w-full sm:max-w-[389px]'>
                 <div className='flex flex-col gap-2 font-extrabold pb-6 sm:pb-4'>
                   <h1 className='text-xl sm:text-2xl'>{cmic.title}</h1>
-                  <p className='text-secondary text-base sm:text-xl'>$ {cmic.prices[0].price}</p>
+                  <p className='text-secondary text-base sm:text-xl'>$ {cmic.prices[0].price || (cmic.prices[0].price = generatePrice())}</p>
                 </div>
                 <div className='flex justify-between sm:w-[389px] font-bold text-base pb-6 sm:pb-4'>
                   <div className='flex flex-col gap-6'>
                     <div className='flex flex-col gap-1'>
                       <p className='text-gray-dark'>Publicado em</p>
-                      <p>{FormatDate(cmic.dates[0].date)}</p>
+                      <p>{FormatDate(cmic.dates[0]?.date || 'Sem registro')}</p>
                     </div>
                     <div className='flex flex-col gap-1'>
                       <p className='text-gray-dark'>Autor</p>
-                      <p>{cmic.creators.items[0].name}</p>
+                      <p>{cmic.creators.items[0]?.name || 'Sem registro'}</p>
                     </div>
                   </div>
                   <div className='flex flex-col gap-6 max-w-[161px]'>
                     <div className='flex flex-col gap-1'>
                       <p className='text-gray-dark'>Núm. de Páginas</p>
-                      <p>{cmic.pageCount}</p>
+                      <p>{cmic.pageCount! || 'Sem registro'}</p>
                     </div>
                     <div className='flex flex-col gap-1'>
                       <p className='text-gray-dark'>Série</p>
-                      <p>{cmic.series.name}</p>
+                      <p>{cmic.series.name! || 'Sem registro'}</p>
                     </div>
                   </div>
                 </div>
