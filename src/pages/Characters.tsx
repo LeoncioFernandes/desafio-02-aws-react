@@ -95,7 +95,7 @@ export default function Characters() {
         <Loader />
       )}
 
-      {characters.length > 20 && (
+      {(characters.length >= 20 && !searchTerm) && (
         <div className="flex justify-center">
           <ButtonCharacters loadCharacters={loadMoreCharacters} />
         </div>

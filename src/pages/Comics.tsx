@@ -34,6 +34,7 @@ export default function Comics() {
   const [offset, setOffset] = useState<number>(0);
   const [load, setLoad] = useState<boolean>(true);
   const [errorApi, setErroApi] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
 
   const { searchTerm } = useSearchItem()
   const publicKey = "493f684e0ee7ad7b3784da42ad63eee4";
@@ -46,17 +47,36 @@ export default function Comics() {
     }
   };
 
+  
   const fetchData = async () => {
+    let ct = count
     setLoad(true)
-    if (offset === 0) {
+    if (searchTerm) {
       setData([])
+      setOffset(0)
+      setCount(count + 1)
+      ct++;
+    }else{
+      if(count > 0){
+        setData([])
+        setOffset(0)
+        setCount(-1)
+        ct = -1
+      }
     }
     try {
       const res = await instance.get("comics", paramsObject)
       const newComics: Comic[] = res.data.data.results
       setData(prevComics => {
+        if(ct == 0){
+          return [...data, ...newComics]
+        }
+        if(ct == -1){
+          setCount(0);
+          return newComics
+        }
         return (
-          offset > 0 && !searchTerm ? [...prevComics, ...newComics] : newComics
+          newComics
         )
       })
       setErroApi(false);
@@ -106,7 +126,7 @@ export default function Comics() {
         <Loader />
       )}
 
-      {data.length > 20 && (
+      {(data.length >= 20 && !searchTerm) && (
         <div className="flex justify-center">
           <ButtonCharacters loadCharacters={loadMoreCharacters} />
         </div>
