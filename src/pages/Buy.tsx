@@ -22,6 +22,14 @@ const checkoutSchema = z.object({
 
 type FormData = z.infer<typeof checkoutSchema>;
 
+type CepSchema = {
+  logradouro: string,
+  bairro: string,
+  localidade: string,
+  uf: string
+  erro: boolean
+}
+
 export default function Buy() {
 
   const {
@@ -31,7 +39,8 @@ export default function Buy() {
     getValues,
     formState: { errors },
     reset,
-    trigger
+    trigger,
+    clearErrors,
   } = useForm<FormData>({
     resolver: zodResolver(checkoutSchema),
   });
@@ -56,9 +65,20 @@ export default function Buy() {
     setPaymentMethod(method);
     setValue('methodPayment', method);
   };
+
+  function maskCep(cep: string) {
+    cep = cep.replace(/\D/g, "");
+    if(cep.length > 5){
+      cep = cep.replace(/(\d{5})(\d)/, "$1-$2");
+    }
+    if(cep.length > 9){
+      cep = cep.slice(0,9);
+    }
+    return cep;
+  }
   
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = maskCep(e.target.value);
     setValue('cep', value);
   
     await trigger('cep');
@@ -69,33 +89,39 @@ export default function Buy() {
   
     if (cepRegex.test(value)) {
       try {
-        const response = await axios.get(`https://viacep.com.br/ws/${numericValue}/json/`);
+        const response = await axios.get<CepSchema>(`https://viacep.com.br/ws/${numericValue}/json/`);
         const data = response.data;
-  
+
         if (!data.erro) {
           setValue('street', data.logradouro);
           setValue('neighborhood', data.bairro);
           setValue('city', data.localidade);
           setValue('state', data.uf);
+          clearErrors(['city', 'neighborhood', 'street', 'state']);
 
           if (cepRef.current) {
             cepRef.current.blur();
           }
-        } 
+        }
       } catch (error) {
         console.error("Erro ao buscar o CEP:", error);
       }
-    } 
+    }
+    else{
+      setValue('street', "");
+      setValue('neighborhood', "");
+      setValue('city', "");
+      setValue('state', "");
+    }
   };
   
-
   const checkout = () => {
     const error = handleFinishPurchase();
     if (error) {
       return error;
     }
     reset();
-    window.location.href = "/sucessfull";
+    navigate("/sucessfull")
   };
 
   const handleFinishPurchase = () => {
@@ -110,7 +136,6 @@ export default function Buy() {
     sessionStorage.setItem("checkoutData", JSON.stringify(validation.data));
     return false;
   };
-
 
   const totalValue = totalCartValue + Number(deliveryFee);
 
@@ -132,19 +157,21 @@ export default function Buy() {
         </div>
         
         <form className="flex flex-col gap-4 mt-8" onSubmit={handleSubmit(checkout)}>
-        <div className="flex flex-col">
-        <input
-            type="text"
-           placeholder="00000-000"
-      
-          //  ref={cepRef}
-            // onChange={handleCepChange}
-            {...register("cep", { required: true, onChange: handleCepChange })}
-      className="w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
-        />
-        {errors.cep && typeof errors.cep.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.cep.message}</p>)}
-        </div>
+          <div className="flex flex-col">
+            <input
+              type="text"
+              placeholder="00000-000"
+              //  ref={cepRef}
+              // onChange={handleCepChange}
+              {...register("cep", { required: true, onChange: handleCepChange })}
+              className="w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
+            />
+            {errors.cep && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.cep.message?.toString()}
+              </p>
+            )}
+          </div>
 
           <div className="flex flex-col">
             <input
@@ -153,8 +180,11 @@ export default function Buy() {
               {...register("street")}
               className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
             />
-                {errors.street && (
-      <p className="text-red-500 text-sm mt-1">{errors.street.message?.toString()}</p>)}
+            {errors.street && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.street.message?.toString()}
+              </p>
+            )}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
@@ -165,8 +195,11 @@ export default function Buy() {
                 {...register("number")}
                 className="sm:w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
               />
-                  {errors.number && typeof errors.number.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.number.message}</p>)}
+              {errors.number && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.number.message?.toString()}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col flex-auto relative">
@@ -176,51 +209,57 @@ export default function Buy() {
                 {...register("complement")}
                 className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
               />         
-        <span className="absolute right-3 top-3 text-gray-dark text-sm">
-          Opcional
-        </span>
+              <span className="absolute right-3 top-3 text-gray-dark text-sm">
+                Opcional
+              </span>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-  <div className="flex flex-col">
-    <input
-      type="text"
-      placeholder="Bairro"
-      {...register("neighborhood")}
-      className="sm:min-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-    />
-    {errors.neighborhood && typeof errors.neighborhood.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.neighborhood.message}</p>
-    )}
-  </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Bairro"
+                {...register("neighborhood")}
+                className="sm:min-w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
+              />
+              {errors.neighborhood && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.neighborhood.message?.toString()}
+                </p>
+              )}
+            </div>
 
-  <div className="flex xs:flex-row gap-3 flex-auto">
-    <div className="flex flex-col flex-1">
-      <input
-        type="text"
-        placeholder="Cidade"
-        {...register("city")}
-        className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
-      />
-      {errors.city && typeof errors.city.message === 'string' && (
-        <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
-      )}
-    </div>
+            <div className="flex xs:flex-row gap-3 flex-auto">
+              <div className="flex flex-col flex-1">
+                <input
+                  type="text"
+                  placeholder="Cidade"
+                  {...register("city")}
+                  className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
+                />
+                {errors.city && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.city.message?.toString()}
+                  </p>
+                )}
+              </div>
 
-    <div className="flex flex-col w-16">
-      <input
-        type="text"
-        placeholder="UF"
-        {...register("state")}
-        className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
-      />
-      {errors.state && typeof errors.state.message === 'string' && (
-        <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>
-      )}
+              <div className="flex flex-col w-16">
+                <input
+                  type="text"
+                  placeholder="UF"
+                  {...register("state")}
+                  className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm text-center outline-none"
+                />
+                {errors.state && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.state.message?.toString()}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
         </form>
       </div>
@@ -240,8 +279,8 @@ export default function Buy() {
 
         <div className="grid grid-cols-3 mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border xs:grid-cols-1">
           <button
-          type="button"
-          onClick={() => handlePaymentMethodChange("Cartão de Crédito")}
+            type="button"
+            onClick={() => handlePaymentMethodChange("Cartão de Crédito")}
             className={`flex items-center gap-3 p-4 text-blackText  rounded-lg w-[206px] xs:w-full  ${
               getValues('methodPayment') === "Cartão de Crédito"
                 ? "bg-secondary2 border-2 border-secondary"
@@ -252,8 +291,8 @@ export default function Buy() {
           </button>
 
           <button
-          type="button"
-          onClick={() => handlePaymentMethodChange("Cartão de Débito")}
+            type="button"
+            onClick={() => handlePaymentMethodChange("Cartão de Débito")}
             className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
               getValues('methodPayment') === "Cartão de Débito"
                 ? "bg-secondary2 border-2 border-secondary"
@@ -265,21 +304,23 @@ export default function Buy() {
           </button>
 
           <button
-          type="button"
-          onClick={() => handlePaymentMethodChange("Dinheiro")}
+            type="button"
+            onClick={() => handlePaymentMethodChange("Dinheiro")}
             className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
               getValues('methodPayment') === "Dinheiro"
                 ? "bg-secondary2 border-2 border-secondary"
                 : "bg-gray-dark border-transparent"
             }`}
           >
-            <FaMoneyBill className="text-secondary w-4 h-4"/> DINHEIRO
+            <FaMoneyBill className="text-secondary w-4 h-4"/>
+            DINHEIRO
           </button>
         </div>
         {errors.methodPayment && (
           <p className="text-red-500 mt-2 text-center">
             Selecione uma forma de pagamento
-          </p>)}
+          </p>
+        )}
       </form>
 
       <footer className="grid fixed bottom-0 w-full bg-primary border-t border-t-gray-dark justify-center">
@@ -302,7 +343,7 @@ export default function Buy() {
 
         <div className="flex justify-center mt-4">
           <button 
-          type='button'
+            type='button'
             className="bg-secondary text-white px-14 py-2 rounded-lg mb-4 hover:bg-primary hover:text-secondary hover:border-secondary transition duration-300 border border-transparent"
             onClick={handleSubmit(checkout)}
           >
