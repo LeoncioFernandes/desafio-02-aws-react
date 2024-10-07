@@ -4,6 +4,7 @@ import instance from "../hooks/instance"
 import { NavLink } from "react-router-dom"
 import ButtonCharacters from "../components/ButtonCharacters"
 import Loader from "../components/Loader"
+import { useSearchItem } from "../context/useSearchItem"
 
 type Comic = {
   id: number,
@@ -34,27 +35,35 @@ export default function Comics() {
   const [load, setLoad] = useState<boolean>(true);
   const [errorApi, setErroApi] = useState<boolean>(false);
 
+  const { searchTerm } = useSearchItem()
   const publicKey = "493f684e0ee7ad7b3784da42ad63eee4";
   const paramsObject = {
     params: {
       apikey: publicKey,
       offset: offset,
       limit: 20,
-      orderBy: '-issueNumber'
+      ...(searchTerm && searchTerm !== '' && { titleStartsWith: searchTerm }) //caso haja um valor e esse valor seja diferente de uma string vazia, um novo parâmetro será adicionado
     }
   };
 
   const fetchData = async () => {
     setLoad(true)
+    if (offset === 0) {
+      setData([])
+    }
     try {
       const res = await instance.get("comics", paramsObject)
-      const newComics: Comic[] = [...data, ...res.data.data.results]
-      setData(newComics)
+      const newComics: Comic[] = res.data.data.results
+      setData(prevComics => {
+        return (
+          offset > 0 && !searchTerm ? [...prevComics, ...newComics] : newComics
+        )
+      })
       setErroApi(false);
     } catch (error) {
       setErroApi(true);
       console.log(error)
-      if(offset > 0){
+      if (offset > 0) {
         const newOfsset: number = offset - 20;
         paramsObject.params.offset = newOfsset;
         setOffset(newOfsset);
@@ -66,7 +75,7 @@ export default function Comics() {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [searchTerm, offset])
 
   const loadMoreCharacters = (): void => {
     const newOfsset: number = offset + 20;
@@ -92,13 +101,23 @@ export default function Comics() {
           </NavLink>
         ))}
       </div>
-      {load ? (
-        <Loader/>
-      ) : (
+      
+      {load && (
+        <Loader />
+      )}
+
+      {data.length > 20 && (
         <div className="flex justify-center">
           <ButtonCharacters loadCharacters={loadMoreCharacters} />
         </div>
       )}
+
+      {data.length == 0 && !load && (
+        <div className="w-full">
+          <h1 className="text-center text-2xl">Nenhum personagem foi encontrado :(</h1>
+        </div>
+      )}
+
       {errorApi && (
         <div className="text-center text-red-800 text-2xl">
           Erro ao buscar os dados! Recarregue a página.
