@@ -23,6 +23,8 @@ export default function Characters() {
   const [offset, setOffset] = useState<number>(0);
   const [load, setLoad] = useState<boolean>(true);
   const [errorApi, setErroApi] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
+
 
   const publicKey = "493f684e0ee7ad7b3784da42ad63eee4";
   const { searchTerm } = useSearchItem()
@@ -40,8 +42,21 @@ export default function Characters() {
   }, [searchTerm, offset]);
 
   const getCharacters = async () => {
-    setLoad(true);
-
+    let ct = count
+    setLoad(true)
+    if (searchTerm) {
+      setCharacters([])
+      setOffset(0)
+      setCount(count + 1)
+      ct++;
+    } else {
+      if (count > 0) {
+        setCharacters([])
+        setOffset(0)
+        setCount(-1)
+        ct = -1
+      }
+    }
     if (offset === 0) {
       setCharacters([])
     }
@@ -49,11 +64,16 @@ export default function Characters() {
     await instance.get("characters", paramsObject)
       .then(response => {
         const newCharacters: Character[] = response.data.data.results
-        setCharacters(prevCharacters => {
-          return (
-            offset > 0 && !searchTerm ? [...prevCharacters, ...newCharacters] : newCharacters
-          )
-        });
+        setCharacters(() => {
+          if (ct == 0) {
+            return [...characters, ...newCharacters]
+          }
+          if (ct == -1) {
+            setCount(0);
+            return newCharacters
+          }
+          return newCharacters
+        })
         setLoad(false);
         setErroApi(false);
       })

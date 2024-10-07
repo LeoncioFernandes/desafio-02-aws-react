@@ -25,7 +25,9 @@ type Comic = {
       }
     ]
   },
-  modified: string
+  dates: [{
+    date: string
+  }]
 }
 
 export default function Comics() {
@@ -43,11 +45,12 @@ export default function Comics() {
       apikey: publicKey,
       offset: offset,
       limit: 20,
+      orderBy: 'title',
       ...(searchTerm && searchTerm !== '' && { titleStartsWith: searchTerm }) //caso haja um valor e esse valor seja diferente de uma string vazia, um novo parâmetro será adicionado
     }
   };
 
-  
+
   const fetchData = async () => {
     let ct = count
     setLoad(true)
@@ -56,8 +59,8 @@ export default function Comics() {
       setOffset(0)
       setCount(count + 1)
       ct++;
-    }else{
-      if(count > 0){
+    } else {
+      if (count > 0) {
         setData([])
         setOffset(0)
         setCount(-1)
@@ -67,17 +70,15 @@ export default function Comics() {
     try {
       const res = await instance.get("comics", paramsObject)
       const newComics: Comic[] = res.data.data.results
-      setData(prevComics => {
-        if(ct == 0){
+      setData(() => {
+        if (ct == 0) {
           return [...data, ...newComics]
         }
-        if(ct == -1){
+        if (ct == -1) {
           setCount(0);
           return newComics
         }
-        return (
-          newComics
-        )
+        return newComics
       })
       setErroApi(false);
     } catch (error) {
@@ -104,6 +105,10 @@ export default function Comics() {
     fetchData()
   }
 
+  const generatePrice = (): number => {
+    return parseFloat((Math.random() + 10).toFixed(2))
+  }
+
   return (
     <div className="flex flex-col gap-8 sm:gap-16 p-6 sm:p-8">
       <div className="flex flex-row justify-center flex-wrap gap-6 sm:gap-16">
@@ -112,16 +117,16 @@ export default function Comics() {
             to={`/comics/${comic.id}`}>
             <ComicCard
               title={comic.title}
-              price={comic.prices[0]?.price || 0}
+              price={comic.prices[0].price || generatePrice()}
               path={comic.thumbnail.path}
               extension={comic.thumbnail.extension}
-              author={comic.creators.items[0]?.name || 'Unknown'}
-              year={new Date(comic.modified).getFullYear().toString() || 'Unknown'}
+              author={comic.creators.items[0]?.name || 'Sem registro'}
+              year={new Date(comic.dates[0].date).getFullYear().toString() || 'Sem registro'}
             />
           </NavLink>
         ))}
       </div>
-      
+
       {load && (
         <Loader />
       )}
