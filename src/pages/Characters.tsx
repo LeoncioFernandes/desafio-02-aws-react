@@ -33,6 +33,7 @@ export default function Characters() {
       apikey: publicKey,
       offset: offset,
       limit: 20,
+      orderBy: "name",
       ...(searchTerm && searchTerm !== "" && { nameStartsWith: searchTerm }) //caso haja um valor e esse valor seja diferente de uma string vazia, um novo parâmetro será adicionado
     }
   };
@@ -45,6 +46,9 @@ export default function Characters() {
     let ct = count
     setLoad(true)
     if (searchTerm) {
+      if(searchTerm.length <= 3){
+        return
+      }
       setCharacters([])
       setOffset(0)
       setCount(count + 1)
@@ -56,9 +60,6 @@ export default function Characters() {
         setCount(-1)
         ct = -1
       }
-    }
-    if (offset === 0) {
-      setCharacters([])
     }
 
     await instance.get("characters", paramsObject)

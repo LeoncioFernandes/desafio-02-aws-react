@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { IoSearchSharp, IoCartOutline, IoClose } from "react-icons/io5";
+import { IoSearchSharp, IoCartOutline, IoClose, IoCloseOutline } from "react-icons/io5";
 import { PiSignOutBold } from "react-icons/pi";
 import { MdOutlineMenu } from "react-icons/md";
 import { useEffect, useRef, useState } from 'react';
@@ -67,6 +67,10 @@ export default function NavBar() {
     navigate("/");
   }
 
+  function resetSearchBar(){
+    setSearchTerm("")
+  }
+
   return (
     <>
       <nav ref={navRef} className='fixed flex w-full items-center justify-between flex-wrap md:flex-nowrap drop-shadow-lg p-3 lg:p-6 xl:p-8 gap-6 xl:gap-16 bg-primary z-10'>
@@ -79,9 +83,17 @@ export default function NavBar() {
 
         {/* BARRA DE PESQUISA */}
         {pageActive != null && (
-          <div className='flex px-4 py-1 md:py-4 items-center grow max-w-xl gap-2.5 bg-gray-light rounded-full order-last sm:order-none'>
+          <div className='relative flex px-4 py-1 md:py-4 items-center grow max-w-xl gap-2.5 bg-gray-light rounded-full order-last sm:order-none'>
             <IoSearchSharp className='w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-gray-dark' />
-            <input className='bg-inherit rounded-r-full w-full text-base lg:text-xl xl:text-2xl placeholder:text-gray-dark placeholder:leading-4 outline-none' type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder={placeholder} />
+            
+              <input className='bg-inherit rounded-r-full w-full text-base lg:text-xl xl:text-2xl placeholder:text-gray-dark placeholder:leading-4 outline-none' type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder={placeholder} />
+              
+              
+            
+            {searchTerm && (
+                <IoCloseOutline onClick={resetSearchBar} className='absolute right-4 w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-secondary hover:cursor-pointer' />
+              )}
+
           </div>
         )}
 

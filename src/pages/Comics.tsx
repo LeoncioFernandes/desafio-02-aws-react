@@ -55,6 +55,9 @@ export default function Comics() {
     let ct = count
     setLoad(true)
     if (searchTerm) {
+      if(searchTerm.length <= 3){
+        return
+      }
       setData([])
       setOffset(0)
       setCount(count + 1)
