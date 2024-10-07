@@ -2,6 +2,7 @@ import { FaPlusCircle } from 'react-icons/fa';
 import { FaMinusCircle } from 'react-icons/fa';
 import { HiOutlineTrash } from "react-icons/hi2";
 import { useCart } from '../context/useShoppingCart';
+import { toast } from 'react-toastify';
 
 type CartItem = {
     id: number,
@@ -11,18 +12,35 @@ type CartItem = {
     totalItemValue: number;
 }
 
+interface ItemId {
+    id: number
+}
+
 export default function CartItemCard({ id, title, img, counter, totalItemValue }: CartItem) {
+
+    const cart = useCart()
+
+    function removeItem({id}: ItemId){
+        cart.removeItem(id)
+        toast.info("Item removido do Carrinho", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+    }
 
     const handleDecrement = useCart(state => state.decrementItem)
 
     const handleIncrement = useCart(state => state.incrementItem)
 
-    const removeItem = useCart(state => state.removeItem)
-
     return (
         <div className="relative w-80 sm:w-[830px] px-4 py-8 bg-gray-light rounded-lg mb-8">
             <button
-                onClick={() => removeItem(id)}
+                onClick={() => removeItem({id})}
                 className='bg-secondary w-11 h-11 rounded-bl-lg rounded-tr-lg absolute top-0 right-0'>
                 <HiOutlineTrash className='w-full h-6 text-white cursor-pointer' />
             </button>

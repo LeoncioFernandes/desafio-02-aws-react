@@ -7,28 +7,45 @@ import { GrLocation } from "react-icons/gr";
 import { PiCurrencyDollarThin, PiCreditCardLight, PiBank } from "react-icons/pi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useCart } from '../context/useShoppingCart';
-
+import { useNavigate } from 'react-router-dom';
 
 const checkoutSchema = z.object({
-  cep: z.string().min(9, "CEP inválido"),
-  street: z.string().min(1, "Rua é obrigatória"),
-  number: z.string().min(1, "Número é obrigatório"),
+  cep: z.string().min(9, {message: "CEP inválido"}),
+  street: z.string().min(1, {message: "Rua é obrigatória"}),
+  number: z.string().min(1, {message: "Número é obrigatório"}),
   complement: z.string().optional(),
-  neighborhood: z.string().min(1, "Bairro é obrigatório"),
-  city: z.string().min(1, "Cidade é obrigatória"),
-  state: z.string().min(2, "UF é obrigatória"),
-  methodPayment: z.string().min(1, "Método de pagamento é obrigatório")
+  neighborhood: z.string().min(1, {message: "Bairro é obrigatório"}),
+  city: z.string().min(1, {message: "Cidade é obrigatória"}),
+  state: z.string().min(2, {message: "UF é obrigatória"}),
+  methodPayment: z.string().min(1, {message: "Método de pagamento é obrigatório"})
 });
 
+type FormData = z.infer<typeof checkoutSchema>;
+
 export default function Buy() {
-  const { register, handleSubmit, setValue, getValues, formState: { errors }, reset, trigger } = useForm({
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+    reset,
+    trigger
+  } = useForm<FormData>({
     resolver: zodResolver(checkoutSchema),
   });
 
   const cepRef = useRef<HTMLInputElement>(null);
-  const totalCartValue = useCart((state) => state.getTotalCartPrice());
+  const cart = useCart();
+  const totalCartValue = cart.getTotalCartPrice()
   const [deliveryFee, setDeliveryFee] = useState(0); 
   const [paymentMethod, setPaymentMethod] = useState("");
+
+  const navigate = useNavigate();
+  if(cart.items.length == 0){
+    navigate("/shopping-cart")
+  }
 
   useEffect(() => {
     const fee = Math.floor(Math.random() * (60 - 6 + 1) + 6) / 2; 
@@ -119,9 +136,10 @@ export default function Buy() {
         <input
             type="text"
            placeholder="00000-000"
-           {...register("cep", { required: true, onChange: handleCepChange })}
-           ref={cepRef}
-            onChange={handleCepChange}
+      
+          //  ref={cepRef}
+            // onChange={handleCepChange}
+            {...register("cep", { required: true, onChange: handleCepChange })}
       className="w-[200px] p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none xs:w-full"
         />
         {errors.cep && typeof errors.cep.message === 'string' && (
@@ -135,8 +153,8 @@ export default function Buy() {
               {...register("street")}
               className="p-3 border border-gray-dark rounded-md shadow-sm sm:text-sm outline-none"
             />
-                {errors.street && typeof errors.street.message === 'string' && (
-      <p className="text-red-500 text-sm mt-1">{errors.street.message}</p>)}
+                {errors.street && (
+      <p className="text-red-500 text-sm mt-1">{errors.street.message?.toString()}</p>)}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">

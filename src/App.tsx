@@ -10,6 +10,8 @@ import Buy from "./pages/Buy"
 import Sucessfull from "./pages/Sucessfull"
 import { useState } from "react"
 import { userLoged } from "./context/useLogedUser"
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -50,6 +52,7 @@ function App() {
         <Route path="/buy" element={<Buy/>}/>
         <Route path="/sucessfull" element={<Sucessfull/>}/>
       </Routes>
+      <ToastContainer />
     </>
   )
 }

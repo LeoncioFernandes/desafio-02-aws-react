@@ -35,7 +35,7 @@ export default function NavBar() {
       window.removeEventListener('load', CurrentNavBarHeight);
       window.removeEventListener('resize', CurrentNavBarHeight)
     };
-  }, [])
+  }, [navRef.current?.clientHeight])
 
   function ActivePage(page: 'comics' | 'characters' | null) {
     setPageActive(page)

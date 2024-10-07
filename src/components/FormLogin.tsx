@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useCreateLoginUser } from "../context/useCreateLoginUser";
 import { userLoged } from "../context/useLogedUser";
+import { toast } from "react-toastify";
 
 type FormLoginProps = {
   toggleLink: React.ReactNode;
@@ -46,22 +47,16 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
       return navigate("/comics")
     }
 
-    console.log("Usuário não encontrado");
-
-    // const storedData = sessionStorage.getItem("FormData");
-
-    // if (storedData) {
-    //   const parsedData = JSON.parse(storedData);
-
-    //   if (
-    //     parsedData.email === data.email &&
-    //     parsedData.password === data.password
-    //   ) {
-    //     console.log("Login bem sucedido", data);
-    //   } else {
-    //     console.log("Usuário não encontrado", data);
-    //   }
-    // }
+    toast.error(
+      "Usuário não encontrado.",{
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
   };
 
   return (

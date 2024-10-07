@@ -1,5 +1,5 @@
 import { FaMapMarkerAlt, FaClock, FaDollarSign } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import { PiCurrencyDollar } from "react-icons/pi";
 import { useCart } from '../context/useShoppingCart';
@@ -9,6 +9,7 @@ export default function Sucessfull() {
   const deliveryDays = Math.floor(Math.random() * 9) + 2;
 
   const clearCart = useCart((state) => state.clearCart);
+  const navigate = useNavigate();
 
   const [checkoutData, setCheckoutData] = useState<any>({
     street: "",
@@ -24,8 +25,9 @@ export default function Sucessfull() {
     const data = sessionStorage.getItem("checkoutData");
     if(data){
       setCheckoutData(JSON.parse(data))
+    }else{
+      navigate("/comics")
     }
-    console.log("verificando estado dos dados", checkoutData)
   }, []);
 
   return (

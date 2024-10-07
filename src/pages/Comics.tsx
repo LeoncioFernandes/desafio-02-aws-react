@@ -28,6 +28,7 @@ type Comic = {
 }
 
 export default function Comics() {
+  sessionStorage.removeItem("checkoutData")
   const [data, setData] = useState<Comic[]>([])
   const [offset, setOffset] = useState<number>(0);
   const [load, setLoad] = useState<boolean>(true);

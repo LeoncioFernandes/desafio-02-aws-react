@@ -5,6 +5,7 @@ import axios from 'axios';
 import Loader from '../components/Loader';
 import { MdAddShoppingCart } from "react-icons/md";
 import { useCart } from '../context/useShoppingCart';
+import { toast } from 'react-toastify';
 
 interface Image{
   path: string,
@@ -45,6 +46,13 @@ interface MoreComics {
   thumbnail: Image
 }
 
+interface AddCart {
+  id: number,
+  title: string,
+  price: number,
+  img: string
+}
+
 export default function ComicsDetails() {
   
   const [comic, setComic] = useState<Comics[]>([]);
@@ -52,6 +60,8 @@ export default function ComicsDetails() {
   const [moreComics, setMoreComics] = useState<MoreComics[]>([]);
   const [load, setLoad] = useState<boolean>(true);
   const [errorApi, setErroApi] = useState<boolean>(false);
+
+  const cart = useCart()
 
   const {id} = useParams<{id: string}>();
   const navigate = useNavigate();
@@ -68,8 +78,20 @@ export default function ComicsDetails() {
     const dt = new Date(date);
     return dt.getFullYear().toString();
   }
-
-  const addToCart = useCart(state => state.addItem)
+  
+  function AddToCart({id, title, price, img}: AddCart){
+    
+    cart.addItem({id, title, price, img})
+    toast.success("Item adicionado ao carrinho", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
   const buyItemNow = useCart(state => state.buyItemNow)
 
   useEffect(()=>{
@@ -191,12 +213,12 @@ export default function ComicsDetails() {
                 <div className='flex flex-col-reverse sm:flex-row gap-4 w-full justify-between font-extrabold text-sm'>
                   <button
                     className='flex gap-1 items-center justify-center w-full px-4 py-2 border border-tertiary rounded-full hover:bg-tertiary hover:text-primary'
-                    onClick={() => addToCart({
-                      id: cmic.id,
+                    onClick={() => AddToCart(
+                      {id: cmic.id,
                       title: cmic.title,
                       price: cmic.prices[0].price,
-                      img: cmic.thumbnail.path + "." + cmic.thumbnail.extension
-                    })}
+                      img: cmic.thumbnail.path + "." + cmic.thumbnail.extension} 
+                    )}
                   >
                     <MdAddShoppingCart className='w-4 h-4' />
                     Adicionar ao carrinho

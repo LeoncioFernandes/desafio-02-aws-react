@@ -6,8 +6,7 @@ import { CiAt } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import { MdOutlinePassword } from "react-icons/md";
 import { useCreateLoginUser } from "../context/useCreateLoginUser";
-import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css'; 
+import { toast } from "react-toastify";
 
 const schema = z
   .object({
@@ -30,14 +29,12 @@ type FormData = z.infer<typeof schema>;
 
 type FormRegisterProps = {
   toggleLink?: React.ReactNode;
-
   onSuccess?: () => void;
-  setSuccessLogin?: () => void;
 };
 
 export default function FormRegister({
   toggleLink,
-  onSuccess, setSuccessLogin
+  onSuccess,
 }: FormRegisterProps) {
   const {
     register,
@@ -56,7 +53,6 @@ export default function FormRegister({
         email: data.email,
         password: data.password,
       });
-      console.log("Resultado de addUser:", successCadUser);
 
       if (!successCadUser) {
         toast.error(
@@ -68,18 +64,26 @@ export default function FormRegister({
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-          });
-          return;
-        }
+        });
+        return;
+      }
+
+      toast.success("Usuário cadastrado com sucesso!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
   
-        if (onSuccess) {
-          	if (setSuccessLogin){
-              setSuccessLogin();
-            }
+      if (onSuccess) {
+        setInterval(() => {
           onSuccess();
-        }
+        }, 100);
+      }
       } catch (error) {
-        console.error("Erro ao tentar cadastrar o usuário", error);
         toast.error("Ocorreu um erro ao tentar cadastrar o usuário.");
       }
     };
@@ -90,7 +94,6 @@ export default function FormRegister({
       className="bg-primary shadow-2xl w-80 rounded-lg"
       onSubmit={handleSubmit(onSubmit)}
       >
-      <ToastContainer />
       <h1 className="flex justify-center mt-8 mb-6 pt-8 mx-11 items-center font-semibold text-4xl">
         Crie seu herói
       </h1>
