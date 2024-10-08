@@ -9,22 +9,25 @@ import { userLoged } from "../context/useLogedUser";
 import { toast } from "react-toastify";
 
 type FormLoginProps = {
-  toggleLink: React.ReactNode;
+  onSuccess: (isSuccess: boolean) => void;
 };
 
 const schema = z.object({
-  email: z.string().email("E-mail inválido"),
+  email: z
+    .string()
+    .email("E-mail inválido"),
   password: z
     .string()
-    .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
-      message:
-        "A senha deve ter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.",
-    }),
+    .min(4, {message: "A senha deve conter pelo menos 4 caracteres"})
+    // .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
+    //   message:
+    //     "A senha deve ter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.",
+    // }),
 });
 
 type FormData = z.infer<typeof schema>;
 
-export default function FormLogin({ toggleLink }: FormLoginProps) {
+export default function FormLogin({ onSuccess }: FormLoginProps) {
   const {
     register,
     handleSubmit,
@@ -68,24 +71,27 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
         Escolha seu herói
       </h1>
 
-      <div className="relative mb-4 mx-6">
-        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
-          <CiAt />
-        </span>
-        <input
-          type="email"
-          id="email"
-          placeholder="E-mail"
-          className="block w-full pl-10 pr-4 py-2 my-2 bg-gray-light rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
-          {...register("email")}
-        />
-      </div>
-      {errors.email && (
-        <span className="ml-7 block text-xs text-secondary">
+      <div className="mb-4 mx-6">
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
+            <CiAt />
+          </span>
+          <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            className="block w-full pl-10 pr-4 py-2 my-2 bg-gray-light rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+            {...register("email")}
+          />
+        </div>
+        {errors.email && (
+        <span className="px-2 block text-xs text-secondary">
           {errors.email.message?.toString()}
         </span>
       )}
-      <div className="relative mb-4 mx-6">
+      </div>
+      
+      <div className="mb-4 mx-6">
         <div className="relative">
           <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
             <CiLock />
@@ -99,7 +105,7 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
           />
         </div>
         {errors.password && (
-          <span className="ml-7 block text-xs text-secondary">
+          <span className="px-2 block text-xs text-secondary">
             {errors.password.message?.toString()}
           </span>
         )}
@@ -112,7 +118,15 @@ export default function FormLogin({ toggleLink }: FormLoginProps) {
       </button>
 
       <div className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
-        {toggleLink}
+        <span className="flex gap-0.5">
+          <p>Não tem uma conta?</p>
+          <button
+            onClick={() => onSuccess(false)}
+            className="text-secondary hover:text-secondary2 transition-colors"
+          >
+            Clique aqui!
+          </button>
+        </span>
       </div>
     </form>
   );

@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { IoSearchSharp, IoCartOutline, IoClose, IoCloseOutline } from "react-icons/io5";
 import { PiSignOutBold } from "react-icons/pi";
 import { MdOutlineMenu } from "react-icons/md";
@@ -15,28 +15,50 @@ export default function NavBar() {
   const [placeholder, setPlaceholder] = useState<string>("")
 
   const navRef = useRef<HTMLElement>(null)
-  const [heightNavBar, setHeightNavBar] = useState<number>(0)
-
+  const compRef = useRef<HTMLDivElement>(null)
+  
   const navigate = useNavigate();
   const cart = useCart()
   const logOffUser = userLoged();
   const { searchTerm, setSearchTerm } = useSearchItem();
 
-  function CurrentNavBarHeight() {
-    if (navRef.current) {
-      setHeightNavBar(navRef.current.clientHeight)
-    }
-  }
+  const location = useLocation()
 
   useEffect(() => {
-    setHeightNavBar(navRef.current!.clientHeight)
-    window.addEventListener('load', CurrentNavBarHeight);
+    const isComicsRoot = location.pathname === "/comics";
+    const isCharactersRoot = location.pathname === "/characters";
+    const isComicsWithParams = location.pathname.startsWith("/comics/") && !isComicsRoot;
+    const isCharactersWithParams = location.pathname.startsWith("/characters/") && !isCharactersRoot;
+
+    if (isComicsRoot) {
+      ActivePage("comics");
+    } else if (isCharactersRoot) {
+      ActivePage("characters");
+    } 
+    else if (isComicsWithParams || isCharactersWithParams) {
+      ActivePage(null);
+    }
+  }, [location.pathname])
+
+
+  useEffect(() => {
+
+    function CurrentNavBarHeight() {
+      if (navRef.current) {
+        compRef.current!.style.height = navRef.current.clientHeight+"px"
+      }
+    }
+
+    CurrentNavBarHeight();
+
+    navRef.current!.addEventListener('resize', CurrentNavBarHeight)
     window.addEventListener('resize', CurrentNavBarHeight);
 
     return () => {
-      window.removeEventListener('load', CurrentNavBarHeight);
+      navRef.current?.removeEventListener('resize', CurrentNavBarHeight)
       window.removeEventListener('resize', CurrentNavBarHeight)
     };
+    
   }, [navRef.current?.clientHeight])
 
   function ActivePage(page: 'comics' | 'characters' | null) {
@@ -51,7 +73,7 @@ export default function NavBar() {
   }
 
   const openMenu = () => {
-    document.body.style.overflow = "hidden"
+    // document.body.style.overflow = "hidden"
     setMenuVisible(true);
     setIsAnimateClose(true);
 
@@ -59,7 +81,7 @@ export default function NavBar() {
 
   const closeMenu = () => {
     setMenuVisible(false);
-    document.body.style.overflow = ""
+    // document.body.style.overflow = "auto"
   };
 
   const logOff = () => {
@@ -85,15 +107,15 @@ export default function NavBar() {
         {pageActive != null && (
           <div className='relative flex px-4 py-1 md:py-4 items-center grow max-w-xl gap-2.5 bg-gray-light rounded-full order-last sm:order-none'>
             <IoSearchSharp className='w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-gray-dark' />
-            
-              <input className='bg-inherit rounded-r-full w-full text-base lg:text-xl xl:text-2xl placeholder:text-gray-dark placeholder:leading-4 outline-none' type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder={placeholder} />
-              
-              
-            
+            <input
+              className='bg-inherit rounded-r-full w-full text-base lg:text-xl xl:text-2xl placeholder:text-gray-dark placeholder:leading-4 outline-none'
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)} placeholder={placeholder}
+            />
             {searchTerm && (
-                <IoCloseOutline onClick={resetSearchBar} className='absolute right-4 w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-secondary hover:cursor-pointer' />
-              )}
-
+              <IoCloseOutline onClick={resetSearchBar} className='absolute right-4 w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-secondary hover:cursor-pointer' />
+            )}
           </div>
         )}
 
@@ -104,38 +126,20 @@ export default function NavBar() {
             <NavLink
               className={({ isActive }) => (isActive ? "text-secondary" : "")}
               to="/comics" end
-            >
-              {({ isActive }) => {
-                if (isActive) {
-                  ActivePage("comics")
-                }
-                return (
-                  <>
-                    Quadrinhos
-                  </>
-                )
-              }}
+            >   
+              Quadrinhos
             </NavLink>
             <NavLink
               className={({ isActive }) => (isActive ? "text-secondary" : "")}
               to="/characters" end
             >
-              {({ isActive }) => {
-                if (isActive) {
-                  ActivePage("characters")
-                }
-                return (
-                  <>
-                    Personagens
-                  </>
-                )
-              }}
+              Personagens 
             </NavLink>
           </div>
 
           {/* CARRINHO DE COMPRAS */}
           <NavLink
-            className={({ isActive }) => (isActive ? "bg-secondary rounded-full text-primary" : "hover:bg-secondary hover:rounded-full hover:text-primary group")}
+            className={({ isActive }) => (isActive ? "bg-secondary rounded-full text-primary" : "rounded-full hover:bg-secondary hover:rounded-full hover:text-primary group transition")}
             to="/shopping-cart"
           >
             {({ isActive }) => {
@@ -155,7 +159,7 @@ export default function NavBar() {
 
           {/* SAIR */}
           <button
-            className="hidden md:flex items-center gap-2 text-primary bg-secondary px-3 py-2 rounded-[9px] border-[1px] border-transparent hover:bg-primary hover:text-secondary hover:border-secondary"
+            className="hidden md:flex items-center gap-2 text-primary bg-secondary px-3 py-2 rounded-[9px] border-[1px] border-transparent hover:bg-primary hover:text-secondary hover:border-secondary transition"
             onClick={logOff}
           >
             <PiSignOutBold className='w-6 h-6' />
@@ -174,7 +178,7 @@ export default function NavBar() {
       </nav>
 
       {/* COMPENSAÇÃO NAVBAR FIXA */}
-      <div style={{ height: heightNavBar }}></div>
+      <div ref={compRef}></div>
 
       {/* FUNDO BLUR MENU SANDUÍCHE */}
       <div
@@ -194,36 +198,18 @@ export default function NavBar() {
         <div className='flex flex-col gap-8 w-fit ml-3'>
           <div className='flex flex-col gap-4 text-base font-extrabold'>
             <p className='text-gray-dark'>Páginas</p>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2' onClick={closeMenu}>
               <NavLink
                 className={({ isActive }) => (isActive ? "text-secondary" : "")}
                 to="/comics" end
               >
-                {({ isActive }) => {
-                  if (isActive) {
-                    ActivePage("comics")
-                  }
-                  return (
-                    <>
-                      Quadrinhos
-                    </>
-                  )
-                }}
+                Quadrinhos
               </NavLink>
               <NavLink
                 className={({ isActive }) => (isActive ? "text-secondary" : "")}
                 to="/characters" end
               >
-                {({ isActive }) => {
-                  if (isActive) {
-                    ActivePage("characters")
-                  }
-                  return (
-                    <>
-                      Personagens
-                    </>
-                  )
-                }}
+                Personagens
               </NavLink>
             </div>
           </div>
