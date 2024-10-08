@@ -41,13 +41,13 @@ export default function CartItemCard({ id, title, img, counter, totalItemValue }
         <div className="relative w-80 sm:w-[830px] px-4 py-8 bg-gray-light rounded-lg mb-8">
             <button
                 onClick={() => removeItem({id})}
-                className='bg-secondary w-11 h-11 rounded-bl-lg rounded-tr-lg absolute top-0 right-0'>
-                <HiOutlineTrash className='w-full h-6 text-white cursor-pointer' />
+                className='bg-secondary text-primary border border-transparent hover:bg-primary hover:text-secondary hover:border-secondary transition w-11 h-11 rounded-bl-lg rounded-tr-lg absolute top-0 right-0'>
+                <HiOutlineTrash className='w-full h-6 cursor-pointer' />
             </button>
             <div className='flex flex-col sm:flex-row items-center gap-8'>
                 <div className='flex items-center flex-col w-full h-full sm:flex-row sm:justify-between gap-4'>
                     <section className='flex flex-col sm:flex-row items-center gap-4'>
-                        <div className='w-[122px] h-[170px]'>
+                        <div className='min-w-[122px] h-[170px]'>
                             <img src={img} className="w-full h-full object-cover object-left-top drop-shadow-xl" />
                         </div>
                         <div className='flex flex-col items-center sm:items-start sm:h-[170px] sm:justify-between gap-4'>

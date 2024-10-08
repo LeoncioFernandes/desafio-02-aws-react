@@ -18,7 +18,6 @@ interface Character {
 }
 
 export default function Characters() {
-  // const [limit, setLimit] = useState<number>(20);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [offset, setOffset] = useState<number>(0);
   const [load, setLoad] = useState<boolean>(true);
@@ -34,7 +33,7 @@ export default function Characters() {
       offset: offset,
       limit: 20,
       orderBy: "name",
-      ...(searchTerm && searchTerm !== "" && { nameStartsWith: searchTerm }) //caso haja um valor e esse valor seja diferente de uma string vazia, um novo parâmetro será adicionado
+      ...(searchTerm && searchTerm !== "" && { nameStartsWith: searchTerm })
     }
   };
 

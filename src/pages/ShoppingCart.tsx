@@ -23,7 +23,7 @@ export default function ShoppingCart() {
       {cart.items.length != 0 ? (
         <footer className='fixed text-center bottom-0 w-full bg-white py-4'>
           <Link to={"/Buy"}>
-            <button className="bg-secondary w-[300px] h-[45px] text-2xl text-white rounded-2xl">Comprar</button>
+            <button className="bg-secondary w-full max-w-[292px] py-2 text-2xl text-primary rounded-2xl border border-transparent hover:bg-primary hover:text-secondary hover:border-secondary transition">Comprar</button>
           </Link>
         </footer>
       ) : ''}

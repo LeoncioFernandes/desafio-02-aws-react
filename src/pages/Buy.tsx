@@ -141,16 +141,16 @@ export default function Buy() {
 
   return (
     <div className="grid justify-center xs:mx-2 ls:mx-2">
-      <h1 className="font-extrabold text-blackText text-6xl text-center my-8 xs:text-3xl">Finalize a Compra</h1>
-      <div className="text-start w-full max-w-[720px] bg-gray-light rounded-md p-2 sm:p-10 xs:p-4 xs:w-full xs:content-center">
+      <h1 className="font-extrabold text-blackText text-[32px] sm:text-[64px] text-center my-8 xs:text-3xl">Finalize a Compra</h1>
+      <div className="text-start w-full max-w-[640px] bg-gray-light rounded-md px-2 py-10 sm:p-10 ">
         
         <div className="flex gap-2">
           <div>
             <GrLocation className="text-secondary w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-semibold">Endereço de entrega</h2>
-            <p className="text-gray-700 col-start-2">
+            <h2 className="text-base">Endereço de entrega</h2>
+            <p className="text-sm col-start-2">
               Informe o endereço onde deseja receber seu pedido.
             </p>
           </div>
@@ -264,56 +264,57 @@ export default function Buy() {
         </form>
       </div>
 
-      <form className="mb-60 max-w-3xl text-start bg-gray-light rounded-md p-10 mt-3 xs:px-2 xs:py-10 xs:max-w-90 xs:mb-20">
+      <form className="mb-60 max-w-[640px] text-start bg-gray-light rounded-md mt-3 px-2 py-10 sm:p-10">
         <div className="flex gap-2">
           <div>
             <PiCurrencyDollarThin className="text-secondary w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl text-tertiary">Pagamento</h2>
-            <p className="text-blackText col-start-2">
+            <h2 className="text-base text-tertiary">Pagamento</h2>
+            <p className="text-sm text-blackText col-start-2">
               O pagamento é feito na entrega. Escolha a forma que deseja pagar
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 mt-8 gap-3 xs:flex-wrap xs:w-[360] box-border xs:grid-cols-1">
+        <div className="flex pt-8 flex-col gap-3 sm:flex-row text-xs">
           <button
             type="button"
             onClick={() => handlePaymentMethodChange("Cartão de Crédito")}
-            className={`flex items-center gap-3 p-4 text-blackText  rounded-lg w-[206px] xs:w-full  ${
+            className={`flex items-center gap-3 p-4 text-blackText rounded-lg w-full sm:w-[206px] border ${
               getValues('methodPayment') === "Cartão de Crédito"
-                ? "bg-secondary2 border-2 border-secondary"
+                ? "bg-secondary2 border-secondary"
                 : "bg-gray-dark border-transparent"
             }`}
           >
-            <PiCreditCardLight className="text-secondary w-4 h-4"/>  CARTÃO DE CRÉDITO
+            <PiCreditCardLight className="text-secondary w-4 h-4"/>
+            <div>CARTÃO DE CRÉDITO</div>
           </button>
 
           <button
             type="button"
             onClick={() => handlePaymentMethodChange("Cartão de Débito")}
-            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-full sm:w-[206px] border ${
               getValues('methodPayment') === "Cartão de Débito"
-                ? "bg-secondary2 border-2 border-secondary"
+                ? "bg-secondary2 border-secondary"
                 : "bg-gray-dark border-transparent"
             }`}
           >
             <PiBank className="text-secondary w-4 h-4"/>
-            CARTÃO DE DÉBITO
+            <div>CARTÃO DE DÉBITO</div>
           </button>
 
           <button
             type="button"
             onClick={() => handlePaymentMethodChange("Dinheiro")}
-            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-[206px] xs:w-full ${
+            className={`flex items-center gap-3  p-4 text-blackText  rounded-lg w-full sm:w-[206px] border ${
               getValues('methodPayment') === "Dinheiro"
-                ? "bg-secondary2 border-2 border-secondary"
+                ? "bg-secondary2 border-secondary"
                 : "bg-gray-dark border-transparent"
             }`}
           >
             <FaMoneyBill className="text-secondary w-4 h-4"/>
-            DINHEIRO
+            <div>DINHEIRO</div>
           </button>
         </div>
         {errors.methodPayment && (
@@ -324,27 +325,27 @@ export default function Buy() {
       </form>
 
       <footer className="grid fixed bottom-0 w-full bg-primary border-t border-t-gray-dark justify-center">
-        <div className="flex flex-col gap-4 w-[620px] my-4 xs:hidden">
-          <div className="flex w-full justify-between flex-wrap">
-            <p>Total de Itens</p>
+        <div className="hidden flex-col gap-4 w-[620px] my-4 sm:flex">
+          <div className="flex w-full justify-between items-center flex-wrap">
+            <p className='text-sm'>Total de Itens</p>
             <p>R$ {totalCartValue.toFixed(2)}</p>
           </div>
 
-          <div className="flex justify-between flex-wrap">
-            <p>Entrega</p>
+          <div className="flex justify-between items-center flex-wrap">
+            <p className='text-sm'>Entrega</p>
             <p>R$ {deliveryFee.toFixed(2)}</p>
           </div>
 
-          <div className="flex justify-between flex-wrap">
-            <p><strong>Total</strong></p>
-            <p><strong>R$ {totalValue.toFixed(2)}</strong></p>
+          <div className="flex justify-between items-center flex-wrap text-xl font-bold">
+            <p className=''>Total</p>
+            <p>R$ {totalValue.toFixed(2)}</p>
           </div>
         </div>
 
         <div className="flex justify-center mt-4">
           <button 
             type='button'
-            className="bg-secondary text-white px-14 py-2 rounded-lg mb-4 hover:bg-primary hover:text-secondary hover:border-secondary transition duration-300 border border-transparent"
+            className="text-2xl font-bold bg-secondary text-white px-14 py-2 rounded-2xl mb-4 hover:bg-primary hover:text-secondary hover:border-secondary transition duration-300 border border-transparent"
             onClick={handleSubmit(checkout)}
           >
             Finalizar Compra

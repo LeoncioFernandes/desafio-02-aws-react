@@ -46,7 +46,7 @@ export default function Comics() {
       offset: offset,
       limit: 20,
       orderBy: 'title',
-      ...(searchTerm && searchTerm !== '' && { titleStartsWith: searchTerm }) //caso haja um valor e esse valor seja diferente de uma string vazia, um novo parâmetro será adicionado
+      ...(searchTerm && searchTerm !== '' && { titleStartsWith: searchTerm })
     }
   };
 

@@ -15,8 +15,8 @@ export default function NavBar() {
   const [placeholder, setPlaceholder] = useState<string>("")
 
   const navRef = useRef<HTMLElement>(null)
-  const [heightNavBar, setHeightNavBar] = useState<number>(0)
-
+  const compRef = useRef<HTMLDivElement>(null)
+  
   const navigate = useNavigate();
   const cart = useCart()
   const logOffUser = userLoged();
@@ -40,21 +40,25 @@ export default function NavBar() {
     }
   }, [location.pathname])
 
-  function CurrentNavBarHeight() {
-    if (navRef.current) {
-      setHeightNavBar(navRef.current.clientHeight)
-    }
-  }
 
   useEffect(() => {
-    setHeightNavBar(navRef.current!.clientHeight)
-    window.addEventListener('load', CurrentNavBarHeight);
+
+    function CurrentNavBarHeight() {
+      if (navRef.current) {
+        compRef.current!.style.height = navRef.current.clientHeight+"px"
+      }
+    }
+
+    CurrentNavBarHeight();
+
+    navRef.current!.addEventListener('resize', CurrentNavBarHeight)
     window.addEventListener('resize', CurrentNavBarHeight);
 
     return () => {
-      window.removeEventListener('load', CurrentNavBarHeight);
+      navRef.current?.removeEventListener('resize', CurrentNavBarHeight)
       window.removeEventListener('resize', CurrentNavBarHeight)
     };
+    
   }, [navRef.current?.clientHeight])
 
   function ActivePage(page: 'comics' | 'characters' | null) {
@@ -69,7 +73,7 @@ export default function NavBar() {
   }
 
   const openMenu = () => {
-    document.body.style.overflow = "hidden"
+    // document.body.style.overflow = "hidden"
     setMenuVisible(true);
     setIsAnimateClose(true);
 
@@ -77,7 +81,7 @@ export default function NavBar() {
 
   const closeMenu = () => {
     setMenuVisible(false);
-    document.body.style.overflow = ""
+    // document.body.style.overflow = "auto"
   };
 
   const logOff = () => {
@@ -135,7 +139,7 @@ export default function NavBar() {
 
           {/* CARRINHO DE COMPRAS */}
           <NavLink
-            className={({ isActive }) => (isActive ? "bg-secondary rounded-full text-primary" : "hover:bg-secondary hover:rounded-full hover:text-primary group")}
+            className={({ isActive }) => (isActive ? "bg-secondary rounded-full text-primary" : "rounded-full hover:bg-secondary hover:rounded-full hover:text-primary group transition")}
             to="/shopping-cart"
           >
             {({ isActive }) => {
@@ -155,7 +159,7 @@ export default function NavBar() {
 
           {/* SAIR */}
           <button
-            className="hidden md:flex items-center gap-2 text-primary bg-secondary px-3 py-2 rounded-[9px] border-[1px] border-transparent hover:bg-primary hover:text-secondary hover:border-secondary"
+            className="hidden md:flex items-center gap-2 text-primary bg-secondary px-3 py-2 rounded-[9px] border-[1px] border-transparent hover:bg-primary hover:text-secondary hover:border-secondary transition"
             onClick={logOff}
           >
             <PiSignOutBold className='w-6 h-6' />
@@ -174,7 +178,7 @@ export default function NavBar() {
       </nav>
 
       {/* COMPENSAÇÃO NAVBAR FIXA */}
-      <div style={{ height: heightNavBar }}></div>
+      <div ref={compRef}></div>
 
       {/* FUNDO BLUR MENU SANDUÍCHE */}
       <div
@@ -194,7 +198,7 @@ export default function NavBar() {
         <div className='flex flex-col gap-8 w-fit ml-3'>
           <div className='flex flex-col gap-4 text-base font-extrabold'>
             <p className='text-gray-dark'>Páginas</p>
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2' onClick={closeMenu}>
               <NavLink
                 className={({ isActive }) => (isActive ? "text-secondary" : "")}
                 to="/comics" end

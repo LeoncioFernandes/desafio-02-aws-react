@@ -10,13 +10,13 @@ import { toast } from "react-toastify";
 
 const schema = z
   .object({
-    name: z.string().min(3, { message: "Nome não pode estar vazio" }),
+    name: z.string().min(3, { message: "Nome não pode menos de 3 caracteres" }),
     email: z.string().email("E-mail inválido"),
     password: z
       .string()
       .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
         message:
-          "A senha deve ter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial.",
+          "A senha deve conter uma letra maiúscula, uma minúscula, um número e um caractere especial.",
       }),
     confirmPassword: z.string(),
   })
@@ -28,14 +28,10 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 type FormRegisterProps = {
-  toggleLink?: React.ReactNode;
-  onSuccess?: () => void;
+  onSuccess: (isSuccess: boolean) => void;
 };
 
-export default function FormRegister({
-  toggleLink,
-  onSuccess,
-}: FormRegisterProps) {
+export default function FormRegister({onSuccess}: FormRegisterProps) {
   const {
     register,
     handleSubmit,
@@ -78,12 +74,9 @@ export default function FormRegister({
         progress: undefined,
       });
   
-      if (onSuccess) {
-        setInterval(() => {
-          onSuccess();
-        }, 100);
-      }
-      } catch (error) {
+      onSuccess(true);
+  
+      } catch {
         toast.error("Ocorreu um erro ao tentar cadastrar o usuário.");
       }
     };
@@ -98,45 +91,46 @@ export default function FormRegister({
         Crie seu herói
       </h1>
 
-      {errors.name && (
-        <span className="ml-7 block text-xs text-secondary">
-          {errors.name.message?.toString()}
-        </span>
-      )}
-      <div className="relative mb-4 mx-6">
-        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
-          <FiUser />
-        </span>
-        <input
-          type="text"
-          id="name"
-          placeholder="Nome Completo"
-          className="block w-full pl-10 pr-4 py-2 my-2 bg-gray-light rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
-          {...register("name")}
-          />
+      <div className="mb-4 mx-6">
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
+            <FiUser />
+          </span>
+          <input
+            type="text"
+            id="name"
+            placeholder="Nome Completo"
+            className="block w-full pl-10 pr-4 py-2 my-2 bg-gray-light rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+            {...register("name")}
+            />
+        </div>
+        {errors.name && (
+          <span className="px-2 block text-xs text-secondary">
+            {errors.name.message?.toString()}
+          </span>
+        )}
       </div>
-      {errors.email && (
-        <span className="ml-7 block text-xs text-secondary">
-          {errors.email.message?.toString()}
-        </span>
-      )}
-      <div className="relative mb-4 mx-6">
-        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
-          <CiAt />
-        </span>
-        <input
-          type="email"
-          id="email"
-          placeholder="E-mail"
-          className="block w-full pl-10 pr-4 py-2 my-2 bg-gray-light rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
-          {...register("email")}
+      
+      <div className="mb-4 mx-6">
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
+            <CiAt />
+          </span>
+          <input
+            type="email"
+            id="email"
+            placeholder="E-mail"
+            className="block w-full pl-10 pr-4 py-2 my-2 bg-gray-light rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+            {...register("email")}
           />
+        </div>
+        {errors.email && (
+          <span className="px-2 block text-xs text-secondary">
+            {errors.email.message?.toString()}
+          </span>
+        )}
       </div>
-      {errors.password && (
-        <span className="block ml-7 mr-5 text-xs text-secondary">
-          {errors.password.message?.toString()}
-        </span>
-      )}
+      
       <div className="relative mb-4 mx-6">
         <div className="relative">
           <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary">
@@ -150,6 +144,11 @@ export default function FormRegister({
             {...register("password")}
             />
         </div>
+        {errors.password && (
+        <span className="px-2 block text-xs text-secondary">
+          {errors.password.message?.toString()}
+        </span>
+      )}
       </div>
       <div className="relative mb-4 mx-6">
         <div className="relative">
@@ -165,7 +164,7 @@ export default function FormRegister({
             />
         </div>
         {errors.confirmPassword && (
-          <span className="block ml-7 text-xs text-secondary">
+          <span className="px-2 block text-xs text-secondary">
             {errors.confirmPassword.message?.toString()}
           </span>
         )}
@@ -173,12 +172,20 @@ export default function FormRegister({
       <button
         type="submit"
         className="bg-secondary font-bold text-2xl text-primary border-2 flex items-center justify-center border-secondary w-72  h-11 rounded-md mx-4 hover:bg-primary hover:text-secondary hover:border-secondary transition-colors"
-        >
+      >
         Cadastrar
       </button>
 
       <div className="flex items-center justify-center mt-3 pb-8 font-normal text-xs">
-        <span>{toggleLink}</span>
+        <span className="flex gap-0.5">
+          <p>Já tem uma conta?</p>
+          <button
+            onClick={() => onSuccess(true)}
+            className="text-secondary hover:text-secondary2 transition-colors"
+          >
+            Clique aqui!
+          </button>
+        </span>
       </div>
 
     </form>
