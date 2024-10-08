@@ -31,13 +31,13 @@ export default function Sucessfull() {
   })
 
   useEffect(()=> {
-    clearCart();
     const data = sessionStorage.getItem("checkoutData");
     if(data){
       setCheckoutData(JSON.parse(data))
     }else{
       navigate("/comics")
     }
+    clearCart();
   }, []);
 
   return (

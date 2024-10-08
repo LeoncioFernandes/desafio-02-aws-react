@@ -10,12 +10,14 @@ import Buy from "./pages/Buy"
 import Sucessfull from "./pages/Sucessfull"
 import { useState } from "react"
 import { userLoged } from "./context/useLogedUser"
+import { useCart } from "./context/useShoppingCart"
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
   const [viewNavBar, setViewNavBar] = useState<boolean>(false)
+  const cart = useCart();
 
   const navigate = useNavigate();
   const useLoged = userLoged();
@@ -23,6 +25,10 @@ function App() {
     if(viewNavBar){
       navigate("/");
     }
+  }
+
+  if(cart.items.length == 0){
+    sessionStorage.removeItem("checkoutData")
   }
 
   return (
