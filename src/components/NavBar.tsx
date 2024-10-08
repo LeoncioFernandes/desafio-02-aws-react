@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { IoSearchSharp, IoCartOutline, IoClose, IoCloseOutline } from "react-icons/io5";
 import { PiSignOutBold } from "react-icons/pi";
 import { MdOutlineMenu } from "react-icons/md";
@@ -21,6 +21,24 @@ export default function NavBar() {
   const cart = useCart()
   const logOffUser = userLoged();
   const { searchTerm, setSearchTerm } = useSearchItem();
+
+  const location = useLocation()
+
+  useEffect(() => {
+    const isComicsRoot = location.pathname === "/comics";
+    const isCharactersRoot = location.pathname === "/characters";
+    const isComicsWithParams = location.pathname.startsWith("/comics/") && !isComicsRoot;
+    const isCharactersWithParams = location.pathname.startsWith("/characters/") && !isCharactersRoot;
+
+    if (isComicsRoot) {
+      ActivePage("comics");
+    } else if (isCharactersRoot) {
+      ActivePage("characters");
+    } 
+    else if (isComicsWithParams || isCharactersWithParams) {
+      ActivePage(null);
+    }
+  }, [location.pathname])
 
   function CurrentNavBarHeight() {
     if (navRef.current) {
@@ -85,15 +103,15 @@ export default function NavBar() {
         {pageActive != null && (
           <div className='relative flex px-4 py-1 md:py-4 items-center grow max-w-xl gap-2.5 bg-gray-light rounded-full order-last sm:order-none'>
             <IoSearchSharp className='w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-gray-dark' />
-            
-              <input className='bg-inherit rounded-r-full w-full text-base lg:text-xl xl:text-2xl placeholder:text-gray-dark placeholder:leading-4 outline-none' type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder={placeholder} />
-              
-              
-            
+            <input
+              className='bg-inherit rounded-r-full w-full text-base lg:text-xl xl:text-2xl placeholder:text-gray-dark placeholder:leading-4 outline-none'
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)} placeholder={placeholder}
+            />
             {searchTerm && (
-                <IoCloseOutline onClick={resetSearchBar} className='absolute right-4 w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-secondary hover:cursor-pointer' />
-              )}
-
+              <IoCloseOutline onClick={resetSearchBar} className='absolute right-4 w-5 lg:w-6 xl:w-8 h-5 lg:h-6 xl:h-8 text-secondary hover:cursor-pointer' />
+            )}
           </div>
         )}
 
@@ -104,32 +122,14 @@ export default function NavBar() {
             <NavLink
               className={({ isActive }) => (isActive ? "text-secondary" : "")}
               to="/comics" end
-            >
-              {({ isActive }) => {
-                if (isActive) {
-                  ActivePage("comics")
-                }
-                return (
-                  <>
-                    Quadrinhos
-                  </>
-                )
-              }}
+            >   
+              Quadrinhos
             </NavLink>
             <NavLink
               className={({ isActive }) => (isActive ? "text-secondary" : "")}
               to="/characters" end
             >
-              {({ isActive }) => {
-                if (isActive) {
-                  ActivePage("characters")
-                }
-                return (
-                  <>
-                    Personagens
-                  </>
-                )
-              }}
+              Personagens 
             </NavLink>
           </div>
 
@@ -199,31 +199,13 @@ export default function NavBar() {
                 className={({ isActive }) => (isActive ? "text-secondary" : "")}
                 to="/comics" end
               >
-                {({ isActive }) => {
-                  if (isActive) {
-                    ActivePage("comics")
-                  }
-                  return (
-                    <>
-                      Quadrinhos
-                    </>
-                  )
-                }}
+                Quadrinhos
               </NavLink>
               <NavLink
                 className={({ isActive }) => (isActive ? "text-secondary" : "")}
                 to="/characters" end
               >
-                {({ isActive }) => {
-                  if (isActive) {
-                    ActivePage("characters")
-                  }
-                  return (
-                    <>
-                      Personagens
-                    </>
-                  )
-                }}
+                Personagens
               </NavLink>
             </div>
           </div>

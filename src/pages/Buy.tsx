@@ -49,7 +49,7 @@ export default function Buy() {
   const cart = useCart();
   const totalCartValue = cart.getTotalCartPrice()
   const [deliveryFee, setDeliveryFee] = useState(0); 
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [_paymentMethod, setPaymentMethod] = useState("");
 
   const navigate = useNavigate();
   if(cart.items.length == 0){

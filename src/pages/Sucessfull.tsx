@@ -1,4 +1,4 @@
-import { FaMapMarkerAlt, FaClock, FaDollarSign } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import { PiCurrencyDollar } from "react-icons/pi";
